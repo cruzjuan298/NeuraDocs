@@ -1,0 +1,24 @@
+{
+  "name": "testfinetunellm",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cruzjuan298/testFineTuneLLM.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cruzjuan298/testFineTuneLLM/issues"
+  },
+  "homepage": "https://github.com/cruzjuan298/testFineTuneLLM#readme",
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

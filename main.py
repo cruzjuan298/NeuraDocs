@@ -27,3 +27,11 @@ embeddings = model.encode(sentences)
 #embeddings is a high dimensional vector
 print(embeddings)
 
+app = FastAPI()
+
+retrieval_model = SentenceTransformer("all-MiniLM-L6-v2")
+generation_model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base")
+docs = ["Doc chunck 1", "Dock chunck 2"]
+embeddings = retrieval_model.encode(docs)
+index = faiss.IndexFlatL2(embeddings.shape[1])
+index.add(embeddings)
