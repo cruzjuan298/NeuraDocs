@@ -1,0 +1,27 @@
+### General Information
+- **What is Type-1?**
+  Type-1 is a platform that provides afforable customer service chatbots.
+
+- **How can I contact customer support?**
+ You can reach us via email at support@company.com or call us at (123) 456-7890.
+
+### Account Management
+- **How do I create an account?**
+  Visit our website, click "Sign Up," and follow the instructions to register.
+
+- **How do I reset my password?**
+  Click "Forgot Password" on the login page and follow the instructions.
+
+- **How do I delete my account?**
+  Log in to your dashboard, navigate to "Account Settings," and select "Delete Account."
+
+### Billing and Payments
+- **What payment methods do you accept?**
+  We accept credit cards, PayPal, and bank transfers.
+
+- **How do I request a refund?**
+  Refund requests can be submitted via your dashboard under "Billing" within 30 days of purchase.
+
+### Policies
+- **What is your cancellation policy?**
+  You can cancel your subscription within 4 weeks of purchase for a full refund.
