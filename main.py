@@ -1,8 +1,11 @@
+import sys
 import faiss #for vector database search of ragbot
 from fastapi import FastAPI # for creating api 
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM #hugging face tranaformers library
 from sentence_transformers import SentenceTransformer #imports tool for generating embeddings
+import numpy as np
 
+'''
 #uses the Autokenizer to convert raw text/prompts to tokens which the pre trained model can understand
 tokernizer = AutoTokenizer.from_pretrained("google/flan-t5-base")
 
@@ -23,15 +26,22 @@ print(tokernizer.decode(outputs[0], skip_special_tokens=True))
 model = SentenceTransformer("all-MiniLM-L6-v2")
 sentences = ["This is a test sentence", "This is another example"]
 embeddings = model.encode(sentences)
+'''
+model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
-#embeddings is a high dimensional vector
-print(embeddings)
+file_embeddings = []
 
-app = FastAPI()
+files = len(sys.argv)
 
-retrieval_model = SentenceTransformer("all-MiniLM-L6-v2")
-generation_model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base")
-docs = ["Doc chunck 1", "Dock chunck 2"]
-embeddings = retrieval_model.encode(docs)
-index = faiss.IndexFlatL2(embeddings.shape[1])
-index.add(embeddings)
+for i in range(1, files):
+    try:
+        with open(sys.argv[i], encoding="UTF-8")as inputFile:
+            file_content = inputFile.read()
+            embedding = model.encode(file_content)
+            file_embeddings.append(embedding)
+    except FileNotFoundError:
+        print("No file found with that name.")
+
+file_embeddings_npa = np.array(file_embeddings)
+
+
