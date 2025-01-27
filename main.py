@@ -2,7 +2,7 @@ import sys
 import faiss #for vector database search of ragbot
 from fastapi import FastAPI # for creating api 
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM #hugging face tranaformers library
-from sentence_transformers import SentenceTransformer #imports tool for generating embeddings
+from sentence_transformers import SentenceTransformer, util #imports tool for generating embeddings
 import numpy as np
 
 '''
@@ -30,18 +30,29 @@ embeddings = model.encode(sentences)
 model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
 file_embeddings = []
+files = []
+files_num = len(sys.argv)
 
-files = len(sys.argv)
-
-for i in range(1, files):
+for i in range(1, files_num):
     try:
         with open(sys.argv[i], encoding="UTF-8")as inputFile:
             file_content = inputFile.read()
             embedding = model.encode(file_content)
             file_embeddings.append(embedding)
+            files.append(sys.argv[i])
     except FileNotFoundError:
         print("No file found with that name.")
 
 file_embeddings_npa = np.array(file_embeddings)
 
+query = input("Please enter a query about the docs provided. The most relevant doc will be provided.")
+
+query_embedding = model.encode(query)
+def get_relevant_file(query_embedding, file_embeddings, file_name):
+    similarities = util.cos_sim(query_embedding, file_embeddings)
+    mos_rel_index = np.argmax(similarities)
+
+    return file_name[mos_rel_index], similarities[mos_rel_index].item()
+
+most_rel_file = get_relevant_file(query_embedding, file_embeddings, files)
 
