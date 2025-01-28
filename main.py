@@ -5,34 +5,12 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM #hugging face tran
 from sentence_transformers import SentenceTransformer, util #imports tool for generating embeddings
 import numpy as np
 
-'''
-#uses the Autokenizer to convert raw text/prompts to tokens which the pre trained model can understand
-tokernizer = AutoTokenizer.from_pretrained("google/flan-t5-base")
-
-input = tokernizer("What is the capital of France?", return_tensors="pt")
-
-print(input)
-
-#importing a sequence to sequence model which is pre-trained on tasks like text sumarization, trnaslation, and q and a 
-#no need to know tokenizer type for a specfic model because the imported libs load the corrext tokenizer based on model name/path
-model1 = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base")
-
-inputs = tokernizer("Translate English to French: What is your name?", return_tensors="pt")
-outputs = model1.generate(**inputs)
-
-print(tokernizer.decode(outputs[0], skip_special_tokens=True))
-
-#loads a pre trained model that generates embeddings based on text or paragraphs
-model = SentenceTransformer("all-MiniLM-L6-v2")
-sentences = ["This is a test sentence", "This is another example"]
-embeddings = model.encode(sentences)
-'''
 model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
 file_embeddings = []
 files = []
-files_num = len(sys.argv)
 
+files_num = len(sys.argv)
 for i in range(1, files_num):
     try:
         with open(sys.argv[i], encoding="UTF-8")as inputFile:
@@ -43,16 +21,42 @@ for i in range(1, files_num):
     except FileNotFoundError:
         print("No file found with that name.")
 
-file_embeddings_npa = np.array(file_embeddings)
+file_embeddings_npa = np.vstack(file_embeddings)
 
-query = input("Please enter a query about the docs provided. The most relevant doc will be provided.")
-
-query_embedding = model.encode(query)
-def get_relevant_file(query_embedding, file_embeddings, file_name):
+def get_relevant_file_index(query_embedding, file_embeddings):
     similarities = util.cos_sim(query_embedding, file_embeddings)
-    mos_rel_index = np.argmax(similarities)
 
-    return file_name[mos_rel_index], similarities[mos_rel_index].item()
+    similarities_array = similarities.numpy()
 
-most_rel_file = get_relevant_file(query_embedding, file_embeddings, files)
+    mos_rel_index = np.argmax(similarities_array)
 
+    return mos_rel_index
+
+def get_query_answer(query_embedding, file_index):
+    file_name = files[file_index]
+
+    file_sentences = []
+
+    with open(file_name, encoding="UTF-8") as inputFile:
+        file_sentences = inputFile.readlines()
+
+    sentences_embeddings = model.encode(file_sentences)
+
+    similarties = util.cos_sim(query_embedding, sentences_embeddings)
+    similarties_npar = similarties.numpy()
+
+    most_rel_index  = np.argmax(similarties_npar)
+    most_rel_sentence = file_sentences[most_rel_index]
+
+    return most_rel_sentence
+        
+def main():
+    query = input("Please enter a query about the docs provided:")
+    query_embedding = model.encode(query)
+
+    relevant_file_index = get_relevant_file_index(query_embedding, file_embeddings)
+    relevant_content = get_query_answer(query_embedding, relevant_file_index)
+    print(f"\n Most relevant content: {relevant_content}")
+
+if __name__ == "__main__":
+    main()
