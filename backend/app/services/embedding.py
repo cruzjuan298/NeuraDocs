@@ -10,7 +10,7 @@ def hash_text(text) :
     ##creating a hash to prevent duplication in the embeddedings
     return hashlib.sha256(text.encode()).hexdigest()
 
-def process_doc(doc_id, text):
+def process_doc(doc_name, text):
     doc_id = hash_text(text)
 
     exisiting_embedding = get_embedding(doc_id)
