@@ -1,5 +1,5 @@
-from app.services.embedding import model 
-from app.services.storage import index
+from services.embedding import model 
+from services.storage import index
 
 def find_best_match(query):
     query_embedding = model.encode(query).astype("float32").reshape(1, -1)

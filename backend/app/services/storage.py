@@ -1,11 +1,13 @@
 import faiss
 import numpy as np
 import sqlite3
-from app.services.embedding import model
 
-d = model.get_sentence_embedding_dimension()
+def get_dims():
+    from app.services.embedding import model
+    d = model.get_sentence_embedding_dimension()
+    return d
 
-index = faiss.IndexFlatL2(d)
+index = faiss.IndexFlatL2(get_dims())
 
 conn = sqlite3.connect("documents.db")
 cur = conn.cursor()

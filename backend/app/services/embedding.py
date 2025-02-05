@@ -2,7 +2,6 @@ import faiss
 import hashlib
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from app.services.storage import save_embedding, get_embedding
 
 model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
@@ -12,7 +11,8 @@ def hash_text(text) :
 
 def process_doc(doc_name, text):
     doc_id = hash_text(text)
-
+    
+    from app.services.storage import save_embedding, get_embedding
     exisiting_embedding = get_embedding(doc_id)
 
     if exisiting_embedding is not None:
