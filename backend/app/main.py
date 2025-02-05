@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from api.routes.upload import uploadRouter 
-from api.routes.query import queryRouter
+from app.api.routes.upload import uploadRouter 
+from app.api.routes.query import queryRouter
 
 app = FastAPI()
 
