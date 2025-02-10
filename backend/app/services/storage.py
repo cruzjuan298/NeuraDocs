@@ -19,5 +19,8 @@ def save_embedding(doc_id, doc_name, embedding):
     index.add(embedding)
 
 def get_embedding(doc_id):
-    cur.execute("SELECT id FROM documents WHERE id=?", (doc_id))
+    if not isinstance(doc_id, str):
+        raise ValueError(f"Expected doc_id to be a string. but got {type(doc_id)}")
+
+    cur.execute("SELECT id FROM document WHERE id=?", (doc_id))
     return cur.fetchone()
