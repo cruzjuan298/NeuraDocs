@@ -22,5 +22,5 @@ def get_embedding(doc_id):
     if not isinstance(doc_id, str):
         raise ValueError(f"Expected doc_id to be a string. but got {type(doc_id)}")
 
-    cur.execute("SELECT id FROM document WHERE id=?", (doc_id))
+    cur.execute("SELECT id FROM document WHERE id=?", (doc_id,))
     return cur.fetchone()
