@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-
+import numpy as np
 queryRouter = APIRouter()
 
-@queryRouter.get("/search")
-def search(query: str):
+@queryRouter.post("/search")
+async def search(query: str):
     from app.services.search import find_best_match
-    best_match = find_best_match(query)
-    return {"best match": best_match}
+    result = find_best_match(query)
+
+    return result
