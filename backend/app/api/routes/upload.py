@@ -2,7 +2,7 @@ from fastapi import APIRouter, UploadFile, File
 
 uploadRouter = APIRouter()
 
-@uploadRouter.post("/upload/")
+@uploadRouter.post("/upload")
 async def upload_document(file: UploadFile = File(...)):
     content = await file.read()
     text = content.decode("latin-1")
