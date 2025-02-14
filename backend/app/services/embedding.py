@@ -11,7 +11,8 @@ def hash_text(text) :
 
 def process_doc(doc_name, text):
     doc_id = hash_text(text)
-    
+    print(doc_id)
+
     from app.services.storage import save_embedding, get_embedding
     exisiting_embedding = get_embedding(doc_id)
 
@@ -20,7 +21,7 @@ def process_doc(doc_name, text):
     
     embedding = model.encode(text).astype("float32").reshape(1, -1)
 
-    save_embedding(doc_id, doc_name, embedding)
-
+    save_embedding(doc_id, doc_name, embedding, text)
+    
     return doc_id
 
