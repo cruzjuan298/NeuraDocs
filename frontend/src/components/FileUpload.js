@@ -33,7 +33,7 @@ const handleUpload = async () => {
     }
   }
   return (
-    <div>
+    <div id="file-upload-div">
         <h2>Upload a File</h2>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUpload}>Upload</button>
