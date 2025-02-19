@@ -16,7 +16,7 @@ async def upload_document(file: UploadFile = File(...)):
 
     from app.services.parse import parse_doc
     text = parse_doc(file_path)
-    
+    print(f"text from file: {text}")
     from app.services.embedding import process_doc
     doc_id = process_doc(file.filename, text)
     
