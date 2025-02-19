@@ -1,6 +1,4 @@
-def parse_text(file_content , encoding="utf-8"):
-    try:
-        text = file_content.decode(encoding)
-    except UnicodeDecodeError:
-        text = file_content.decode("latin-1")
+def parse_doc(file_path: str ) -> str:
+    with open(file_path, "r", encoding="utf-8") as f:
+        text = f.read()
     return text
