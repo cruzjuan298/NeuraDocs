@@ -11,7 +11,7 @@ def hash_text(text) :
 
 def process_doc(doc_name, text):
     doc_id = hash_text(text)
-    print(doc_id)
+    print(f"Doc id from uploaded doc: ${doc_id}")
 
     from app.services.storage import save_embedding, get_embedding
     exisiting_embedding = get_embedding(doc_id)
