@@ -1,6 +1,7 @@
 import chardet
 import pymupdf
 import pathlib
+import re
 
 def parse_doc(file_path: str ) -> str:
     file_path = pathlib.Path(file_path)
@@ -16,15 +17,21 @@ def parse_doc(file_path: str ) -> str:
         try:
             with pymupdf.open(file_path) as doc:
                 text = chr(12).join([page.get_text() for page in doc])
+
             newFilePath = file_path.with_suffix(".txt")
             newFilePath.write_text(text, encoding="utf-8")
-            
-            return newFilePath.read_text(encoding="utf-8")
+
+            return splitSent(newFilePath.read_text(encoding="utf-8"))
         except Exception as e:
             print(f"Error processing PDF: {e}")
             encoding = "utf-8"
 
     with open(file_path, "r", encoding=encoding, errors="replace") as f:
             text = f.read()
-    return text
+    formattedText = splitSent(text)
+    return formattedText
 
+def splitSent(text):
+    splitText = [re.sub(r'\s+', ' ', re.sub(r'[^a-zA-Z0-9\s]', '', line.strip().lower())) 
+             for line in re.split(r'[.!?]', text)]
+    return splitText
