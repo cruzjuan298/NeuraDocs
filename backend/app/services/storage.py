@@ -3,7 +3,7 @@ import numpy as np
 import sqlite3
 
 doc_id_mapping = {}
-doc_to_text = {}
+sentence_id_mapping = {}
 
 
 def get_dims():
@@ -11,7 +11,8 @@ def get_dims():
     d = model.get_sentence_embedding_dimension()
     return d
 
-index = faiss.IndexFlatL2(get_dims())
+doc_index = faiss.IndexFlatL2(get_dims())
+sent_index = faiss.IndexFlatL2(get_dims())
 
 conn = sqlite3.connect("documents.db")
 cur = conn.cursor()
@@ -21,25 +22,32 @@ conn.commit()
 
 cur.execute("""
             CREATE TABLE IF NOT EXISTS document (
-            id TEXT PRIMARY KEY, 
+            row_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id TEXT KEY, 
             name TEXT, 
             embedding_bytes BLOB,
-            text TEXT
+            sentence TEXT,
+            sentence_embedding BLOB
             )
             """)
 
-def save_embedding(doc_id, doc_name, embedding, text):
+def save_embedding(doc_id, doc_name, embedding, text, sentence_embeddings):
     global doc_id_mapping
-
-    embedding = np.array(embedding, dtype=np.float32).reshape(1, -1)
-    cur.execute("INSERT INTO document (id, name, embedding_bytes, text) VALUES(?, ?, ?, ?)", (doc_id, doc_name, embedding.tobytes(), text))
-    conn.commit()
-
-    index.add(embedding)
-
-    faiss_index = index.ntotal - 1
-    doc_id_mapping[doc_id] = faiss_index
     
+    nembedding = np.array(embedding, dtype=np.float32).reshape(1, -1)
+    print(nembedding.shape)
+    cur.execute("INSERT INTO document (id, name, embedding_bytes) VALUES(?, ?, ?)", (doc_id, doc_name, sqlite3.Binary(embedding.tobytes())))
+    conn.commit()
+    doc_index.add(nembedding)
+    faiss_index = doc_index.ntotal - 1
+    doc_id_mapping[doc_id] = faiss_index
+
+    for sent, emb in zip(text, sentence_embeddings):
+        emb_np = np.array(emb, dtype=np.float32)
+        cur.execute("INSERT INTO document (id, sentence, sentence_embedding) VALUES (?, ?, ?)", (doc_id, sent, sqlite3.Binary(emb_np.tobytes())))
+        sent_index.add(emb_np.reshape(1, -1))
+        sentence_id_mapping[sent_index.ntotal - 1] = doc_id
+    conn.commit()
     print(f"Saved Doc_id: {doc_id} -> FAISS index: {faiss_index}")
 
 def get_embedding(doc_id):
@@ -58,7 +66,7 @@ def get_embedding(doc_id):
         return None
 
 def get_document_text(doc_id):
-    cur.execute("SELECT text FROM document WHERE id=?", (doc_id,))
+    cur.execute("SELECT sentence FROM document WHERE id=?", (doc_id,))
     result = cur.fetchone()
     if result:
         return result[0]

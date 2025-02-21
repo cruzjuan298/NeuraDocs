@@ -5,12 +5,12 @@ from sentence_transformers import SentenceTransformer
 
 model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
-def hash_text(text) :
+def hash_doc(doc) :
     ##creating a hash to prevent duplication in the embeddedings
-    return hashlib.sha256(text.encode()).hexdigest()
+    return hashlib.sha256(doc.encode()).hexdigest()
 
-def process_doc(doc_name, text):
-    doc_id = hash_text(text)
+def process_file(doc_name, doc_info, text):
+    doc_id = hash_doc(doc_info)
     print(f"Doc id from uploaded doc: ${doc_id}")
 
     from app.services.storage import save_embedding, get_embedding
@@ -19,9 +19,9 @@ def process_doc(doc_name, text):
     if exisiting_embedding is not None:
         return doc_id
     
-    embedding = model.encode(text).astype("float32").reshape(1, -1)
-
-    save_embedding(doc_id, doc_name, embedding, text)
+    embedding = model.encode(doc_info).astype("float32").reshape(1, -1)
+    sentence_embeddings = model.encode(text, convert_to_numpy=True)
+    save_embedding(doc_id, doc_name, embedding, text, sentence_embeddings)
     
     return doc_id
 

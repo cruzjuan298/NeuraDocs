@@ -15,9 +15,9 @@ async def upload_document(file: UploadFile = File(...)):
         f.write(await file.read())
 
     from app.services.parse import parse_doc
-    text = parse_doc(file_path)
+    text, docInfo = parse_doc(file_path)
     print(text)
-    from app.services.embedding import process_doc
-    doc_id = process_doc(file.filename, text)
+    from app.services.embedding import process_file
+    doc_id = process_file(file.filename, docInfo, text)
     
     return {"message" : "Document processed", "doc_id": doc_id}

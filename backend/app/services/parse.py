@@ -21,7 +21,7 @@ def parse_doc(file_path: str ) -> str:
             newFilePath = file_path.with_suffix(".txt")
             newFilePath.write_text(text, encoding="utf-8")
 
-            return splitSent(newFilePath.read_text(encoding="utf-8"))
+            return splitSent(newFilePath.read_text(encoding="utf-8")), text
         except Exception as e:
             print(f"Error processing PDF: {e}")
             encoding = "utf-8"
@@ -29,7 +29,7 @@ def parse_doc(file_path: str ) -> str:
     with open(file_path, "r", encoding=encoding, errors="replace") as f:
             text = f.read()
     formattedText = splitSent(text)
-    return formattedText
+    return formattedText, text
 
 def splitSent(text):
     splitText = [re.sub(r'\s+', ' ', re.sub(r'[^a-zA-Z0-9\s]', '', line.strip().lower())) 
