@@ -15,7 +15,7 @@ This project processes and indexes text documents using FAISS for efficient simi
 - Python 3.10+
 - Required dependencies:
   ```sh
-  pip install faiss-cpu numpy sqlite3 pymupdf chardet
+  pip install faiss-cpu numpy sqlite3 pymupdf chardet 
   ```
 
 ### Installation

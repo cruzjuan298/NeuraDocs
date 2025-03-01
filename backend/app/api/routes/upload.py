@@ -15,6 +15,7 @@ async def upload_document(file: UploadFile = File(...)):
         f.write(await file.read())
 
     from app.services.parse import parse_doc
+    ## text is the formatted text and doc_info is the normal text 
     text, docInfo = parse_doc(file_path)
     print(text)
     from app.services.embedding import process_file
