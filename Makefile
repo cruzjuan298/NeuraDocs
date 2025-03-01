@@ -29,4 +29,4 @@ docker-stop:
 	docker stop $(CONTAINER_NAME) || true
 
 start:
-	concurrently "npm --prefix frontend start" "cd backend && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+	concurrently "npm --prefix frontend start" "cd backend && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"

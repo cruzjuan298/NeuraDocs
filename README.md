@@ -54,7 +54,15 @@ D, I = doc_index.search(query_embedding.reshape(1, -1), k=5)
    ```sh
    python app/main.py
    ```
-
+   OR
+1. Install Uvicorn:
+    ```sh
+    pip install uvicorn
+    ```
+2. Run the server:
+    ```sh
+    uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ```
 ### Running the Frontend
 1. Navigate to the frontend directory:
    ```sh
