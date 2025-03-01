@@ -2,7 +2,10 @@ import faiss
 import numpy as np
 import sqlite3
 
+# dict with keys => doc id and values => faiss index number; usef for retreiving the index based on doc id
 doc_id_mapping = {}
+
+# dict with keys => 
 sentence_id_mapping = {}
 
 
@@ -17,7 +20,7 @@ sent_index = faiss.IndexFlatL2(get_dims())
 conn = sqlite3.connect("documents.db")
 cur = conn.cursor()
 
-cur.execute("DROP TABLE IF EXISTS document") ##for testing purposes ; clears data
+cur.execute("DROP TABLE IF EXISTS document") ##for testing purposes ; clears data ; delete once deployed
 conn.commit()
 
 cur.execute("""
