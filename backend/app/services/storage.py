@@ -72,10 +72,3 @@ def get_embedding(doc_id):
         return ndoc_id, doc_name, embedding
     else:
         return None
-
-def get_document_text(doc_id):
-    cur.execute("SELECT sentence FROM document WHERE id=?", (doc_id,))
-    result = cur.fetchone()
-    if result:
-        return result[0]
-    return None
