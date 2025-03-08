@@ -1,0 +1,61 @@
+/* Sidebar styles */
+/* Sidebar container */
+#sidebar-div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; /* Full height */
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    transition: width 0.3s ease-in-out;
+    width: 200px; /* Default width when open */
+}
+
+/* Sidebar collapsed */
+#sidebar-div.collapsed {
+    width: 60px; /* Collapsed width */
+}
+
+/* Sidebar button */
+#sidebar-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* Sidebar navigation */
+#sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+/* Sidebar links */
+#sidebar-nav a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    transition: background 0.3s;
+}
+
+#sidebar-nav a:hover {
+    background-color: #444;
+}
+
+/* Sidebar icon */
+#sidebar-nav a svg {
+    margin-right: 10px;
+}
+
+/* Hide text when sidebar is collapsed */
+#sidebar-div.collapsed #sidebar-nav a span {
+    display: none;
+}

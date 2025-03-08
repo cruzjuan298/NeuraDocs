@@ -49,7 +49,9 @@ def save_embedding(doc_id, doc_name, embedding, text, sentence_embeddings):
     for sent, emb in zip(text, sentence_embeddings):
         emb_np = np.array(emb, dtype=np.float32)
         sent_index.add(emb_np.reshape(1, -1))
-        sentence_id_mapping[sent] = emb
+
+    ##adding sentene index to dic 
+    sentence_id_mapping[doc_id] = sent_index
 
     # serialize the sentence embeddings 
     faiss_index_serialized = pickle.dumps(sent_index)
