@@ -1,7 +1,8 @@
-
+import { Link } from "react-router-dom"; 
 import { Home, Database, X } from "lucide-react"; 
 import "../styles/sidebar.css";
 
+// takes in a state as a function argument to depict wether or not the side bar appears
 const Sidebar = ({ isOpen, setIsOpen }) => {
     return (
         <div id="sidebar-div" className={isOpen ? "" : "collapsed"}>
@@ -10,14 +11,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </button>
 
             <nav id="sidebar-nav">
-                <a id="sidebar-a" href="/"> 
+                <Link to="/"> 
                     <Home size={24} />
                     {isOpen && <span>Home</span>}
-                </a>
-                <a href="/databases">
+                </Link>
+                <Link to="/database">
                     <Database size={24} />
                     {isOpen && <span>Previous Databases</span>}
-                </a>
+                </Link>
             </nav>
         </div>
     )

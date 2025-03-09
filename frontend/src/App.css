@@ -13,7 +13,7 @@ body{
 
 /* Main Content */
 .main-content {
-    margin-left: 160px;
+    margin-left: 130px;
     transition: margin-left 0.3s ease-in-out;
     padding: 20px;
     width: 100%;

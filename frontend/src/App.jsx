@@ -1,23 +1,28 @@
 import React, { useState } from "react";
-import ReactDom from "react-dom/client"
-import './App.css'
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import FileUpload from "./components/FileUpload";
 import SearchFile from "./components/SearchFile";
 import Sidebar from "./components/Sidebar";
+import Home from "./pages/home";
+import './App.css'
 
 function App(){
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="app-container">
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-    <div className={`main-content ${isOpen ? "shifted" : ""}`}>
-      <h1 id="app-h1">File Upload</h1>
-      <FileUpload />
-      <SearchFile /> 
-    </div>
-    </div>
-  )
+    <Router>
+      <div className="app-container">
+        <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+
+        <div className={`main-content ${isOpen ? "shifted" : ""}`}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes> 
+        </div>
+      </div>
+    </Router>
+  );
+
 }
 
 export default App
