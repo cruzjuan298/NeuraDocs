@@ -1,0 +1,30 @@
+.home-contianer {
+    text-align: center;
+    padding: 40px;
+}
+
+.create-db-button {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.create-db-button:hover {
+    background: #0056b3;
+}
+
+.view-db-button {
+    display: block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.view-db-button:hover {
+    text-decoration: undelrine;
+}
