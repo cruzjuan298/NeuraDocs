@@ -1,7 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../styles/database.css";
-import FileUpload from "../components/FileUpload.js";
-import SearchFile from "../components/SearchFile.js";
 
 const Databases = ({ databases }) => {
     return (
@@ -11,8 +10,10 @@ const Databases = ({ databases }) => {
                 <p>No databases created yet. </p>
             ) : (
                 <ul>
-                    {databases.map((db, index) => (
-                        <li key={index}> {db} </li>
+                    {databases.map((db) => (
+                        <li key={db.id}> 
+                            <Link to={`/new-database/${db.id}`}>{db.name}</Link>
+                        </li>
                     ))}
                 </ul>
             )}
