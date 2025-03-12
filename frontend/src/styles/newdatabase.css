@@ -1,0 +1,83 @@
+.newDatabase-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.navbar {
+    top: 0;
+    left: 0;
+    width: calc(100%-60px);
+    height: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    z-index: 1000;  /* must be lower than 1100 (z-index of side bar div component)*/
+    transition: left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+.back-button {
+    text-decoration: none;
+    margin-right: 10px;
+    font-size: 10px;
+    width: 20%;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3 ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.database-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.uploaded-files {
+    list-style: none;
+    padding: 0;
+}
+
+.uploaded-files li {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.uploaded-files button {
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.database-content {
+    padding-top: 80px;
+}
+
+.newDatabase-container.shifted {
+    margin-left: 250px;
+}
+
+.newDatabase-container.shifted .navbar {
+    left: 250px;
+    width: calc(100% -250px);
+}
+
+.file-upload-newdatabase {
+    display: flex;
+    justify-content: center;
+}

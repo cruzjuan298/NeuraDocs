@@ -9,10 +9,10 @@ const Databases = ({ databases }) => {
             {databases.length == 0 ? (
                 <p>No databases created yet. </p>
             ) : (
-                <ul>
+                <ul className="database-list">
                     {databases.map((db) => (
-                        <li key={db.id}> 
-                            <Link to={`/new-database/${db.id}`}>{db.name}</Link>
+                        <li key={db.id} className="database-item"> 
+                            <Link to={`/new-database/${db.id}`} className="database-link">{db.name}</Link>
                         </li>
                     ))}
                 </ul>

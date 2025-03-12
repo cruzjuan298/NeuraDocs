@@ -1,0 +1,28 @@
+#file-upload-div {
+    color: #343541;
+    border: 2px dashed #007bff;
+    padding: 20px;
+    text-align: center;
+    width: 400px;
+    margin: auto;
+    border-radius: 10px;
+    background: #f8f9fa;
+}
+
+#file-upload-div:hover {
+    background: #e9ecef;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:disabled {
+    background: #ccc;
+}

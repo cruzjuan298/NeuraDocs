@@ -27,7 +27,7 @@ function App(){
           <Routes>
             <Route path="/" element={<Home createDatabase={createDatabase} />} />
             <Route path="/database" element={<Databases databases={databases} />} />
-            <Route path="/new-database/:id" element={<NewDataBase />} />
+            <Route path="/new-database/:id" element={<NewDataBase isOpen={isOpen} />} />
           </Routes> 
         </div>
       </div>

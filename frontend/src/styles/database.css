@@ -2,14 +2,23 @@
     padding: 20px;
 }
 
-.databases-container ul {
+.database-list {
     list-style: none;
     padding: 0;
 }
 
-.databases-container li {
+.database-item{
     padding: 10px;
     margin: 5px 0px;
     border-radius: 5px;
 }
 
+.database-link {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.database-link:hover {
+    color: #0056b3;
+}

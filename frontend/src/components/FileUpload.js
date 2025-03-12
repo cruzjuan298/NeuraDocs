@@ -1,8 +1,9 @@
 import { useState } from "react";
+import "../styles/fileupload.css";
 
-const FileUpload = () => {
-    const [file, setFile] = useState(null);
-    const [message, setMessage] = useState("");
+const FileUpload = ({ onUpload }) => {
+    const [file, setFile] = useState(null); // used for sending parcel/checking if there is a file uploaded
+    const [message, setMessage] = useState(""); // used to fetch the message from the api request
 
 const handleFileChange = (event) => {
     setFile(event.target.files[0])
@@ -17,7 +18,6 @@ const handleUpload = async () => {
     const formData = new FormData();
     formData.append("file", file);
 
-
     try {
         const response = await fetch("http://127.0.0.1:8000/files/upload", {
             method: "POST",
@@ -26,6 +26,10 @@ const handleUpload = async () => {
 
         const data = await response.json();
         setMessage(data.message || "Upload successful!");
+
+        if (onUpload) {
+            onUpload(file);
+        }
 
     } catch (error) {
         console.log("Erorr while uploading", error);
