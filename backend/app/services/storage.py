@@ -60,17 +60,3 @@ def save_embedding(doc_id, doc_name, embedding, text, sentence_embeddings):
     conn.commit()
     print(f"Saved Doc_id: {doc_id} -> FAISS index: {faiss_index}")
 
-def get_embedding(doc_id):
-    if not isinstance(doc_id, str):
-        doc_id = str(doc_id)
-
-    cur.execute("SELECT doc_id, name, embedding_bytes FROM document WHERE doc_id=?", (doc_id,))
-    
-    result = cur.fetchone()
-
-    if result:
-        ndoc_id, doc_name, embedding_bytes = result
-        embedding = np.frombuffer(embedding_bytes, dtype=np.float32)
-        return ndoc_id, doc_name, embedding
-    else:
-        return None

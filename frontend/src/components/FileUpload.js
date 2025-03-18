@@ -6,7 +6,8 @@ const FileUpload = ({ onUpload }) => {
     const [message, setMessage] = useState(""); // used to fetch the message from the api request
 
 const handleFileChange = (event) => {
-    setFile(event.target.files[0])
+    setFile(event.target.files[0]);
+    setMessage("");
 }
 
 const handleUpload = async () => {
