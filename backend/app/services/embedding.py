@@ -13,10 +13,12 @@ def process_file(doc_name, doc_info, text):
     doc_id = hash_doc(doc_info)
     print(f"Doc id from uploaded doc: ${doc_id}")
 
-    from app.services.storage import save_embedding, get_embedding
-    exisiting_embedding = get_embedding(doc_id)
+    from app.services.storage import save_embedding
+    from app.services.retrieval import getInfo
 
-    if exisiting_embedding is not None:
+    ## checking is the document has already been proccessed
+    exisiting_info = getInfo(doc_id)
+    if exisiting_info is not None:
         return doc_id
     
     embedding = model.encode(doc_info).astype("float32").reshape(1, -1)

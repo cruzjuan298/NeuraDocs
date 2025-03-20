@@ -8,9 +8,26 @@ const NewDataBase = ({ isOpen }) => {
     const { id } = useParams(); //getting the database ID from the URL, deconstructioning the id property from the object
     const navigate = useNavigate();
     const [uploadedFiles, setUploadedFiles] = useState([]);
-
+    const [retrievedFiles, setRetreivedFiles] = useState([]);
     const handleFileUpload = (file) => {
         setUploadedFiles(prevFiles => [...prevFiles, file]); 
+    }
+
+    const retrieveDatabases = async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/retrieve", {
+                method: "GET",
+                body: doc_id
+            })
+
+            const data = response.json()
+            
+            if (data === None){
+                setRetreivedFiles(prevFiles)
+            } else setRetreivedFiles(prevFiles => [...prevFiles, data]);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
