@@ -23,20 +23,36 @@ cur = conn.cursor()
 cur.execute("DROP TABLE IF EXISTS document") ##for testing purposes ; clears data ; delete once deployed
 conn.commit()
 
+cur.execute("DROP TABLE IF EXISTS document_mappuing")
+conn.commit()
+
 cur.execute("""
             CREATE TABLE IF NOT EXISTS document (
-            doc_id TEXT, 
-            name TEXT, 
-            embedding_bytes BLOB,
-            faiss_index BLOB
+            db_id PRIMARY KEY TEXT,
+            name TEXT,
             )
             """)
+
+
+# mapping table for db_id to multiple doc_id values
+cur.execute("""
+            CREATE TABLE IF NOT EXISTS document_metadata (
+            doc_id TEXT PRIMARY KEY,
+            db_id TEXT,
+            embedding_bytes BLOB,
+            faiss_index BLOB
+            FOREIGN KEY (db_id) REFERENCES document(db_id) on DELETE CASCADE
+            )
+""")
+
+def insertDb(dbId):
+    cur.execute("INSERT INTO document db_id" , (dbId,))
 
 def save_embedding(doc_id, doc_name, embedding, text, sentence_embeddings):
     global doc_id_mapping, sentence_id_mapping
     
     nembedding = np.array(embedding, dtype=np.float32).reshape(1, -1)
-    cur.execute("INSERT INTO document (doc_id, name, embedding_bytes) VALUES(?, ?, ?)", (doc_id, doc_name, sqlite3.Binary(embedding.tobytes())))
+    cur.execute("INSERT INTO document_metadata (doc_id, name, embedding_bytes) VALUES(?, ?, ?)", (doc_id, doc_name, sqlite3.Binary(embedding.tobytes())))
     conn.commit()
     doc_index.add(nembedding)
     faiss_index = doc_index.ntotal - 1
@@ -56,7 +72,6 @@ def save_embedding(doc_id, doc_name, embedding, text, sentence_embeddings):
     # serialize the sentence embeddings 
     faiss_index_serialized = pickle.dumps(sent_index)
 
-    cur.execute("UPDATE document SET faiss_index=? WHERE doc_id=?", (sqlite3.Binary(faiss_index_serialized), doc_id))
+    cur.execute("UPDATE document_metadata SET faiss_index=? WHERE doc_id=?", (sqlite3.Binary(faiss_index_serialized), doc_id))
     conn.commit()
     print(f"Saved Doc_id: {doc_id} -> FAISS index: {faiss_index}")
-
