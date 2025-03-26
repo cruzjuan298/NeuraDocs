@@ -1,5 +1,5 @@
 import os
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Form
 from pathlib import Path
 
 uploadRouter = APIRouter()
@@ -8,7 +8,7 @@ UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 @uploadRouter.post("/upload")
-async def upload_document(file: UploadFile = File(...)):
+async def upload_document(db_id: str = Form(...), file: UploadFile = File(...)):
     file_path = UPLOAD_DIR / file.filename
 
     with open(file_path, "wb") as f:
@@ -19,6 +19,6 @@ async def upload_document(file: UploadFile = File(...)):
     text, docInfo = parse_doc(file_path)
     print(text)
     from app.services.embedding import process_file
-    doc_id = process_file(file.filename, docInfo, text)
+    doc_id = process_file(db_id, file.filename, docInfo, text)
     
     return {"message" : "Document processed", "doc_id": doc_id}

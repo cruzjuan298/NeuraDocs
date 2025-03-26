@@ -38,7 +38,7 @@ const NewDataBase = ({ isOpen }) => {
             </div>
             <div className="database-content">
             {/* File upload section */}
-                <FileUpload onUpload={handleFileUpload} className="file-upload-newdatabase" />
+                <FileUpload onUpload={handleFileUpload} dbId={id} className="file-upload-newdatabase" />
 
             {/* Upload Files section */}
                 <div className="uploaded-files">

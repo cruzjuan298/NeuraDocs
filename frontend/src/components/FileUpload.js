@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../styles/fileupload.css";
 
-const FileUpload = ({ onUpload }) => {
+const FileUpload = ({ onUpload, dbId }) => {
     const [file, setFile] = useState(null); // used for sending parcel/checking if there is a file uploaded
     const [message, setMessage] = useState(""); // used to fetch the message from the api request
 
@@ -16,9 +16,14 @@ const handleUpload = async () => {
         return;
     }
 
+    if (!dbId) {
+        alert("Database ID is missing!");
+        return 
+    }
     const formData = new FormData();
     formData.append("file", file);
-
+    formData.append("db_id", dbId);
+    
     try {
         const response = await fetch("http://127.0.0.1:8000/files/upload", {
             method: "POST",

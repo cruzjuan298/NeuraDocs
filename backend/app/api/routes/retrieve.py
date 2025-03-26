@@ -1,33 +1,31 @@
 from fastapi import APIRouter
-from app.services.retrieval import getDocId, getInfo
+from app.services.retrieval import getDocId, getDb, getDocNames
 
 retrieveRouter = APIRouter()
 
 ##retrieve methods for getting database or doc info
 
 @retrieveRouter.get("/retrieve")
-async def retrieveDoc(docName) :
-    docId = getDocId(docName)
-
-    if docId is None:
-        return {"message" : "Document not found"}
-
-    docInfo = getInfo(docId)
-    return {"message" : "request processed", "doc_id" : docInfo[0], "doc_name" : docInfo[1], "doc_embedding" : docInfo[2], "doc_faissIndex" : docInfo[3]}
+async def retrieveDb(db_id: str) :
+    dbInfo = getDb(db_id)
+    dbDocNames = getDocNames(dbInfo)
+    return dbDocNames
 
 @retrieveRouter.get("/retrieveDoc")
-async def getDoc(docName):
-    docId= getDocId(docName)
+async def getDoc(db_id, docName):
+    docId = getDocId(db_id, docName)
 
     if docId is None:
         return {"message" : "Document not found"}
+    
     return {"doc_id" : docId}
 
 
 @retrieveRouter.get("/retreiveDatabase")
-async def getDB(docName):
-    docId = getDocId(docName)
+async def getDB(db_id, docName):
+    docId = getDocId(db_id, docName)
 
     if docId is None:
         return {"message" : "Document not found"}
+    
     return {"doc_id" : docId}
