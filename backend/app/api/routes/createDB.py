@@ -8,4 +8,6 @@ def createNewDB(dbId):
 
     from app.services.storage import insertDb
     insertDb(dbId)
+    if insertDb is None:
+        return None
     return {"message" : "Database inserted"}

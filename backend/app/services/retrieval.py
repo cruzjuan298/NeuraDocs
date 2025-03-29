@@ -34,9 +34,12 @@ def getDb(db_id: str):
     if not isinstance(db_id, str):  
         db_id = str(db_id)
     
+    print(f"Querying database for db_id: {db_id}")
+
     cur.execute("SELECT * FROM document_metadata where db_id=?", (db_id,))
     results = cur.fetchall()
-    
+    print(f"Results: {results}")
+
     if results:
         return results
     else:

@@ -47,8 +47,12 @@ cur.execute("""
 """)
 
 def insertDb(dbId):
-    cur.execute("INSERT OR IGNORE INTO document (db_id) VALUES (?)", (dbId,))
-    conn.commit()
+    try:
+        cur.execute("INSERT OR IGNORE INTO document (db_id) VALUES (?)", (dbId,))
+        conn.commit()
+    except sqlite3.DatabaseError:
+        return None
+
 
 def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings):
     global doc_id_mapping, sentence_id_mapping
@@ -79,6 +83,8 @@ def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings
     sentence_id_mapping[doc_id] = sent_index
 
     # serialize the sentence embeddings 
+
+    #error in serialization 3/27
     faiss_index_serialized = pickle.dumps(sent_index) if sent_index.ntotal > 0 else None
 
     cur.execute("UPDATE document_metadata SET faiss_index=? WHERE doc_id=?", (sqlite3.Binary(faiss_index_serialized), doc_id))

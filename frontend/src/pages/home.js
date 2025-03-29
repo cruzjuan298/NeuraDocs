@@ -9,7 +9,25 @@ const Home = ({ createDatabase }) => {
 
     const handleCreateDatabase = () => {
         const newDatabaseId = createDatabase();
-        navigate(`/new-database/${newDatabaseId}`)
+        insertDb(newDatabaseId);
+        navigate(`/new-database/${newDatabaseId}`);
+    }
+
+    const insertDb = async ({db_id}) => {
+        try {
+            response =  await fetch("http://127.0.0.1:8000/createDB", {
+                method : "POST",
+                body: db_id
+            })
+
+            data = response.json()
+
+            if (data === None){
+                console.log("Error inserting DB")
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (

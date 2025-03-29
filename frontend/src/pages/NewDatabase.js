@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import FileUpload from "../components/FileUpload.js";
 import SearchFile from "../components/SearchFile.js";
@@ -8,21 +8,25 @@ const NewDataBase = ({ isOpen }) => {
     const { id } = useParams(); //getting the database ID from the URL, deconstructioning the id property from the object
     const navigate = useNavigate();
     const [uploadedFiles, setUploadedFiles] = useState([]);
+
     const handleFileUpload = (file) => {
         setUploadedFiles(prevFiles => [...prevFiles, file]); 
     }
 
+    useEffect(() => {
+        retrieveDatabases();
+    }, [id])
+
     const retrieveDatabases = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/retrieve", {
-                method: "GET",
-                body: id
+            const response = await fetch(`http://127.0.0.1:8000/retrieveDatabase?db_id=${id}`, {
+                method: "GET"
             })
 
-            const data = response.json()
+            const data = await response.json()
             
-            if (data !== None){
-                setUploadedFiles(prevFiles => [...prevFiles, data]);
+            if (data !== null){
+                data.map(x => setUploadedFiles(prevFiles => [...prevFiles, x]));
             } 
         } catch (error) {
             console.log(error)
