@@ -50,6 +50,7 @@ def insertDb(dbId):
     try:
         cur.execute("INSERT OR IGNORE INTO document (db_id) VALUES (?)", (dbId,))
         conn.commit()
+        return "Inserted DB"
     except sqlite3.DatabaseError:
         return None
 

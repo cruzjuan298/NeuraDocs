@@ -19,14 +19,18 @@ const NewDataBase = ({ isOpen }) => {
 
     const retrieveDatabases = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/retrieveDatabase?db_id=${id}`, {
+            const response = await fetch(`http://127.0.0.1:8000/retrieve/retrieveDatabase?db_id=${id}`, {
                 method: "GET"
             })
 
             const data = await response.json()
             
             if (data !== null){
-                data.map(x => setUploadedFiles(prevFiles => [...prevFiles, x]));
+                console.log("retrieve Data: ", data)
+                //data.forEach(x => setUploadedFiles(prevFiles => [...prevFiles, x]));
+                // create a function that loops through the object values and sets them into the upload files state
+                Object.values(data).forEach(x => setUploadedFiles(prevFiles => [...prevFiles, x]));
+                console.log(uploadedFiles)
             } 
         } catch (error) {
             console.log(error)

@@ -9,22 +9,23 @@ const Home = ({ createDatabase }) => {
 
     const handleCreateDatabase = () => {
         const newDatabaseId = createDatabase();
-        insertDb(newDatabaseId);
+        insertDb(newDatabaseId.toString());
         navigate(`/new-database/${newDatabaseId}`);
     }
 
-    const insertDb = async ({db_id}) => {
+    const insertDb = async (db_id) => {
         try {
-            response =  await fetch("http://127.0.0.1:8000/createDB", {
+            const response = await fetch("http://127.0.0.1:8000/create/createDB", {
                 method : "POST",
                 body: db_id
             })
 
-            data = response.json()
+            const data = await response.json()
 
-            if (data === None){
+            if (data === null ){
                 console.log("Error inserting DB")
             }
+            console.log("insertDB data: " ,data)
         } catch (error) {
             console.log(error)
         }
