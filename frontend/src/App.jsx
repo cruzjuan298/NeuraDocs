@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Databases from "./pages/Databases"
 import Sidebar from "./components/Sidebar";
-import Home from "./pages/Home";
+import Home from "./pages/home";
 import './App.css'
 import NewDataBase from "./pages/NewDatabase";
 
