@@ -29,6 +29,11 @@ This project processes and indexes text documents using FAISS for efficient simi
    pip install -r requirements.txt
    ```
 
+   ```sh
+   cd frontend
+   npm install
+   ```
+
 ## Usage
 ### 1. Parsing a Document
 Use `parse_doc(file_path)` to extract and clean text from a document.
