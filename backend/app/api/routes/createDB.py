@@ -3,10 +3,14 @@ from fastapi import APIRouter
 createDBRouter = APIRouter()
 
 @createDBRouter.post("/createDB")
-def createNewDB(dbId):
+def createNewDB(dbId, db_name):
     #inserting db id into the database
     from app.services.storage import insertDb
-    message = insertDb(dbId)
+    if not isinstance(dbId, str) and not isinstance(db_name, str):
+        dbId = str(dbId)
+        db_name = str(db_name)
+    message = insertDb(dbId, db_name)
+    print(message)
     if insertDb is None:
         return None
     return {"message" : message}

@@ -17,7 +17,7 @@ def get_dims():
 
 doc_index = faiss.IndexFlatL2(get_dims())
 
-conn = sqlite3.connect("documents.db")
+conn = sqlite3.connect("documents.db", check_same_thread=False)
 cur = conn.cursor()
 
 cur.execute("DROP TABLE IF EXISTS document") ##for testing purposes ; clears data ; delete once deployed
@@ -46,13 +46,15 @@ cur.execute("""
             )
 """)
 
-def insertDb(dbId):
+def insertDb(dbId, db_name):
     try:
-        cur.execute("INSERT OR IGNORE INTO document (db_id) VALUES (?)", (dbId,))
+        cur.execute("""
+                    INSERT INTO document VALUES (?, ?)
+                    """, (dbId, db_name))
         conn.commit()
         return "Inserted DB"
-    except sqlite3.DatabaseError:
-        return None
+    except Exception as e:
+        return e
 
 
 def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings):
@@ -85,8 +87,10 @@ def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings
 
     # serialize the sentence embeddings 
 
-    #error in serialization 3/27
-    faiss_index_serialized = pickle.dumps(sent_index) if sent_index.ntotal > 0 else None
+    try: 
+        faiss_index_serialized = pickle.dumps(sent_index) if sent_index.ntotal > 0 else None
+    except:
+        return "Error in converting faiss index"
 
     cur.execute("UPDATE document_metadata SET faiss_index=? WHERE doc_id=?", (sqlite3.Binary(faiss_index_serialized), doc_id))
     conn.commit()
