@@ -26,10 +26,10 @@ const NewDataBase = ({ isOpen }) => {
             const data = await response.json()
             
             if (data !== null){
-                console.log("retrieve Data: ", data)
+                console.log("retrieve Data: ", data);
                 //data.forEach(x => setUploadedFiles(prevFiles => [...prevFiles, x]));
                 // create a function that loops through the object values and sets them into the upload files state
-                Object.values(data).forEach(x => setUploadedFiles(prevFiles => [...prevFiles, x]));
+                setUploadedFiles(data.doc_names);
                 console.log(uploadedFiles)
             } 
         } catch (error) {

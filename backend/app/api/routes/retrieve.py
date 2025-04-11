@@ -12,7 +12,7 @@ async def retrieveDb(db_id: str) :
     
     dbInfo = getDb(db_id)
     if dbInfo is None:
-        return {"message" : "No DB found"}
+        return None
 
     dbDocNames = getDocNames(dbInfo)
     return {"doc_names" :  dbDocNames}
