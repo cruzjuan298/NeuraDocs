@@ -7,10 +7,11 @@
     padding: 0;
 }
 
-.database-item{
+.database-item {
     padding: 10px;
     margin: 5px 0px;
     border-radius: 5px;
+    background-color: #444;
 }
 
 .database-link {
@@ -21,4 +22,63 @@
 
 .database-link:hover {
     color: #0056b3;
+}
+
+.database-link-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.edit-button:hover {
+    background: #0056b3;
+}
+
+.edit-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.edit-input {
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    flex-grow: 1;
+}
+
+.save-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.save-button:hover {
+    background: #218838;
+}
+
+.cancel-button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background: #c82333;
 }

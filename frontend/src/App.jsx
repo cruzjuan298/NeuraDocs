@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Databases from "./pages/Databases"
-import Sidebar from "./components/Sidebar";
-import Home from "./pages/Home";
+import Databases from "./pages/Databases.jsx"
+import Sidebar from "./components/Sidebar.jsx";
+import Home from "./pages/Home.jsx";
 import './App.css'
-import NewDataBase from "./pages/NewDatabase";
+import NewDataBase from "./pages/NewDatabase.jsx";
 
 function App(){
   const [isOpen, setIsOpen] = useState(false);

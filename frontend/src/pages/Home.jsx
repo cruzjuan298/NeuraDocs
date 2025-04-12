@@ -17,7 +17,13 @@ const Home = ({ createDatabase }) => {
         try {
             const response = await fetch("http://127.0.0.1:8000/create/createDB", {
                 method : "POST",
-                body: db_id
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    dbId: db_id,
+                    db_name: `Database ${db_id.split('-')[1]}`
+                })
             })
 
             const data = await response.json()

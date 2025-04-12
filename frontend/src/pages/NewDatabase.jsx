@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import FileUpload from "../components/FileUpload.js";
-import SearchFile from "../components/SearchFile.js";
+import FileUpload from "../components/FileUpload.jsx";
+import SearchFile from "../components/SearchFile.jsx";
 import "../styles/newdatabase.css";
 
 const NewDataBase = ({ isOpen }) => {
@@ -10,7 +10,9 @@ const NewDataBase = ({ isOpen }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const handleFileUpload = (file) => {
-        setUploadedFiles(prevFiles => [...prevFiles, file]); 
+        setUploadedFiles(prevFiles => [...prevFiles, 
+            { name: file.name, size : file.size}
+        ]); 
     }
 
     useEffect(() => {
@@ -27,9 +29,7 @@ const NewDataBase = ({ isOpen }) => {
             
             if (data !== null){
                 console.log("retrieve Data: ", data);
-                //data.forEach(x => setUploadedFiles(prevFiles => [...prevFiles, x]));
-                // create a function that loops through the object values and sets them into the upload files state
-                setUploadedFiles(data.doc_names);
+                setUploadedFiles(data.doc_names.map(name => ({name, size: "Unknown"})));
                 console.log(uploadedFiles)
             } 
         } catch (error) {
@@ -57,7 +57,7 @@ const NewDataBase = ({ isOpen }) => {
                             {uploadedFiles.map((file, index) => {
                                 return (
                                 <li key={index}>
-                                    {file.name} - {file.size} bytes
+                                    {file.name} - {file.size}
                                 </li>
                                 );
                             })}
