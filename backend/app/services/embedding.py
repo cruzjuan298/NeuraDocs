@@ -23,7 +23,7 @@ def process_file(db_id, doc_name, doc_info, text):
     
     exisitingDb = getDb(db_id)
     if exisitingDb is None:
-        insertDb(db_id, doc_name) ## change this into db name instead of doc_name
+        insertDb(db_id, doc_name)
 
     embedding = model.encode(doc_info).astype("float32").reshape(1, -1)
     sentence_embedding = model.encode(text, convert_to_numpy=True)

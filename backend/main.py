@@ -3,7 +3,9 @@ from app.api.routes.upload import uploadRouter
 from app.api.routes.query import queryRouter
 from app.api.routes.retrieve import retrieveRouter
 from app.api.routes.createDB import createDBRouter
+from app.api.routes.modify import modifyRouter
 from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
 app.add_middleware(
@@ -23,3 +25,4 @@ app.include_router(uploadRouter, prefix="/files")
 app.include_router(queryRouter, prefix="/query")
 app.include_router(retrieveRouter, prefix="/retrieve")
 app.include_router(createDBRouter, prefix="/create")
+app.include_router(modifyRouter, prefix="/modify")

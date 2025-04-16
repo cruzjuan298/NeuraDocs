@@ -13,10 +13,6 @@ This project processes and indexes text documents using FAISS for efficient simi
 ## Setup Instructions
 ### Prerequisites
 - Python 3.10+
-- Required dependencies:
-  ```sh
-  pip install faiss-cpu numpy sqlite3 pymupdf chardet 
-  ```
 
 ### Installation
 1. Clone the repository:
@@ -26,12 +22,7 @@ This project processes and indexes text documents using FAISS for efficient simi
    ```
 2. Install dependencies:
    ```sh
-   pip install -r requirements.txt
-   ```
-
-   ```sh
-   cd frontend
-   npm install
+   make install-all
    ```
 
 ## Usage
@@ -57,31 +48,27 @@ D, I = doc_index.search(query_embedding.reshape(1, -1), k=5)
    ```
 2. Start the backend server:
    ```sh
-   python app/main.py
+   uvicorn main:app --host 0.0.0.0 --port 8000 --reload  
    ```
    OR
-1. Install Uvicorn:
+1. Run with the make file:
     ```sh
-    pip install uvicorn
-    ```
-2. Run the server:
-    ```sh
-    uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+   make run-backend
     ```
 ### Running the Frontend
 1. Navigate to the frontend directory:
    ```sh
    cd frontend
    ```
-2. Install frontend dependencies:
+2. Build the frontend:
    ```sh
-   npm install
+   npm run build
    ```
-3. Start the frontend server:
+3. Preview the frontend:
    ```sh
-   npm start
+   npm run preview
    ```
-### Running both at the same time 
+### Running both at the same time (requires you to build the frontend first )
 1. In the root directory, run:
    ```sh
    make start

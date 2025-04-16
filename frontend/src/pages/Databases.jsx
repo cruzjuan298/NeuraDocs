@@ -46,6 +46,7 @@ const Databases = ({ databases }) => {
                     {databases.map((db) => (
                         <li key={db.id} className="database-item">
                             {editingId === db.id ? (
+                                // edit db name here
                                 <div className="edit-container">
                                     <input
                                         type="text"
