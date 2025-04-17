@@ -25,7 +25,7 @@ build-frontend:
 
 # Run the frontend development server
 run-frontend:
-	cd frontend && npm run preview
+	cd frontend && npm run dev -- --port 3000
 
 # Install dependencies inside virtual environment
 install:
