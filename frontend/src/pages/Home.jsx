@@ -39,7 +39,7 @@ const Home = ({ createDatabase }) => {
 
     return (
         <div className="home-container">
-            <h1>Welcome to NeuraDocs</h1>
+            <h1>RAG based documentation system</h1>
             <p>Create databases for your documents and manage them with ease.</p>
             
             <div className="home-actions">

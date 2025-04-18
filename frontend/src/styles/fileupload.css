@@ -1,18 +1,20 @@
 #file-upload-div {
-    color: #343541;
-    border: 2px dashed #007bff;
+    color: #ffffff;
+    border: 2px dashed #5fa5ef;
     padding: 20px;
     text-align: center;
     width: 400px;
     margin: auto;
     border-radius: 10px;
-    background: #f8f9fa;
+    background-color: #444;
+    transition: background 0.3s ease;
 }
 
 #file-upload-div:hover {
-    background: #e9ecef;
-}
-
+    background: #3b3b3b;
+    border-color: #007bff;
+  }
+  
 button {
     margin-top: 10px;
     padding: 10px 15px;

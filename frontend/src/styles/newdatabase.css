@@ -56,14 +56,6 @@
     align-items: center;
 }
 
-.uploaded-files button {
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
 .database-content {
     padding-top: 80px;
 }

@@ -1,4 +1,5 @@
 import {useState} from "react";
+import "../styles/searchfile.css"
 
 const SearchFile = () => {
     const [query, setQuery] = useState("");
@@ -35,9 +36,11 @@ const SearchFile = () => {
     return (
         <div id="search-box-div">
             <label id="search-box-label">Search for information from the file you just processed.</label>
-            <input type="text" id="search-box-input" placeholder="Enter Text" onChange={handleChange}></input>
-            <button onClick={handleClick}>Submit</button>
-            {response && <p>{response}</p>}
+            <div className="input-button-div">
+                <input type="text" id="search-box-input" placeholder="Enter Text" onChange={handleChange}></input>
+                <button onClick={handleClick}>Submit</button>
+                {response && <p>{response}</p>}
+            </div>
         </div>
     )
 }
