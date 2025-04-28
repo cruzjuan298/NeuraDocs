@@ -17,7 +17,7 @@ def get_dims():
 
 doc_index = faiss.IndexFlatL2(get_dims())
 
-conn = sqlite3.connect("documents.db", check_same_thread=False)
+conn = sqlite3.connect("documents.db", timeout=30)
 cur = conn.cursor()
 
 cur.execute("DROP TABLE IF EXISTS document") ##for testing purposes ; clears data ; delete once deployed

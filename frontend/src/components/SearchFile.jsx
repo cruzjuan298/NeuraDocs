@@ -1,7 +1,7 @@
 import {useState} from "react";
 import "../styles/searchfile.css"
 
-const SearchFile = () => {
+const SearchFile = ({ db_id }) => {
     const [query, setQuery] = useState("");
     const [response, setResponse] = useState("")
     const handleChange = (event) => {
@@ -14,28 +14,44 @@ const SearchFile = () => {
             return;
         }
         try {
-            const response = await fetch(`http://127.0.0.1:8000/query/search?query=${encodeURIComponent(query)}`, {
+            const response = await fetch("http://127.0.0.1:8000/query/search", {
                 method : "POST",
                 headers: {
                     "Content-Type" : "application/json"
                 },
-                body : JSON.stringify({query : query}),
+                body : JSON.stringify({
+                    query : query, 
+                    db_id : db_id
+                }),
             })
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Server error:", errorText);
+                alert("Server error, check console for details.");
+                return;
+            }
+
             const data = await response.json();
-            if (data.best_match) {
-                setResponse(`Best Match : ${data.best_match.doc_name} (ID ${data.best_match.doc_id})`)
+            console.log("Search response:", data); // Debug log
+
+            if (data.error) {
+                setResponse(`Error: ${data.error}`);
+            } else if (data.best_match) {
+                setResponse(`Best Match: ${data.best_match.doc_name} (ID ${data.best_match.doc_id})`);
             } else {
-                setResponse(data.error || "No match found.")
+                setResponse("No match found.");
             }
 
         } catch (error) {
-            console.log("Error trying to send query", error)
+            console.error("Error trying to send query:", error);
+            setResponse("Error occurred while searching. Please try again.");
         }
     }
 
     return (
         <div id="search-box-div">
-            <label id="search-box-label">Search for information from the file you just processed.</label>
+            <label id="search-box-label">Search for information from your files</label>
             <div className="input-button-div">
                 <input type="text" id="search-box-input" placeholder="Enter Text" onChange={handleChange}></input>
                 <button onClick={handleClick}>Submit</button>

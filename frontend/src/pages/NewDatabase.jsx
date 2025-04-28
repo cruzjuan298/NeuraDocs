@@ -46,7 +46,7 @@ const NewDataBase = ({ isOpen }) => {
             </div>
             <div className="database-content">
             {/* Search file uplaod  */}
-                <SearchFile />
+                <SearchFile db_id={id}/>
             {/* File upload section */}
                 <FileUpload onUpload={handleFileUpload} dbId={id} className="file-upload-newdatabase" />
 

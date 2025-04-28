@@ -1,10 +1,11 @@
 import faiss
 import numpy as np
 
-def find_best_match(query):
+def find_best_match(query, db_id):
     from app.services.embedding import model 
-    from app.services.storage import doc_index, get_embedding, doc_id_mapping
-
+    from app.services.storage import doc_index, doc_id_mapping
+    from app.services.retrieval import getDb
+    
     query_embedding = model.encode(query).astype("float32").reshape(1, -1)
     _, cloest_id = doc_index.search(query_embedding, k=1)
 
@@ -24,6 +25,5 @@ def find_best_match(query):
     if doc_id is None:
         return {"error": f"No doc_id found for FAISS index {faiss_index}"}
     
-    doc_metadata = get_embedding(doc_id)
 
  
