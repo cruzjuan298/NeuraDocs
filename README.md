@@ -13,7 +13,7 @@ This project processes and indexes text documents using FAISS for efficient simi
 ## Setup Instructions
 ### Prerequisites
 - Python 3.10+
-
+- NOTE: this uses the faiss-gpu package, which may not work if you have a gpu that doesnt support CUDA. Consider switching to the faiss-cpu package instead.
 ### Installation
 1. Clone the repository:
    ```sh

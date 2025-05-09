@@ -51,3 +51,9 @@ def getDocNames(dbInfo):
         docNames.append(x[2])
     
     return docNames
+
+def getDbEmbeddings(db_id: str): 
+    if not isinstance(db_id, str ):
+        db_id = str(db_id)
+    
+    cur.execute("SELECET ")

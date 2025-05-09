@@ -19,7 +19,7 @@ async def search(request: SearchRequest):
 
         if best_match == None:
             return "No best match found"
-        return best_match
+        return {"best_match" : best_match}
     
     except Exception as e:
         return {"error": str(e)}
