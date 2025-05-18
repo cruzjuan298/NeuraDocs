@@ -56,4 +56,15 @@ def getDbEmbeddings(db_id: str):
     if not isinstance(db_id, str ):
         db_id = str(db_id)
     
-    cur.execute("SELECET ")
+    cur.execute("SELECET embedding_bytes from document_metadata where db_id=?", (db_id,))
+    results = cur.fetchall
+    
+    if results:
+        return results
+    else:
+        return None
+    
+def getDocIdsByDbId(db_id: str):
+    cur.execute("SELECT doc_id FROM document_metadata WHERE db_id=? ORDER by rowdid", (db_id,))
+    results = cur.fetchall()
+    return [row[0] for row in results]
