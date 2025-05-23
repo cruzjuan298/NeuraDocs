@@ -1,14 +1,19 @@
 import faiss
 import numpy as np
-from app.services.embedding import model 
-from app.services.retrieval import getDbEmbeddings, getDocIdsByDbId
-from app.services.transform import blobToEmbedding
+import pickle
+from .embedding import model 
+from .retrieval import getDbEmbeddings, getDocIdsByDbId, getInfo
+from .transform import blobToEmbedding
 
 
-def find_best_match(query, db_id):
+def get_query_embedding(query: str):
+     query_embedding = model.encode(query).astype("float32").reshape(1, -1)
+     return query_embedding
+
+def find_best_match(query: str, db_id: str):
     try:
         # Create query embedding
-        query_embedding = model.encode(query).astype("float32").reshape(1, -1)
+        query_embedding = get_query_embedding(query)
 
         # Get database embeddings and doc IDs
         dbEmbeddings = getDbEmbeddings(db_id)
@@ -54,7 +59,40 @@ def find_best_match(query, db_id):
 
     except Exception as e:
         print(f"Error in find_best_match: {str(e)}")
-        return {"error": f"Search failed: {str(e)}"}
+        return {"error": f"Search failed in find_best_match: {str(e)}"}
     
+def find_best_sentence(query: str, db_id: str, doc_id: str):
+    try:
+        query_embedding = get_query_embedding(query)
 
- 
+        # getInfo returns a tuple of (doc_id, doc_name, embedding, faissIndex)
+        doc_info = getInfo(db_id, doc_id)
+        
+        if doc_info is None:
+            return {"error": "Document not found"}
+            
+        doc_id, doc_name, embedding, faiss_index, text_content = doc_info
+        
+        if faiss_index is None:
+            return {"error": "Document has no sentence embeddings available for search"}
+            
+        sentIndexDeserialized = pickle.loads(faiss_index)
+
+        distance, indicies = sentIndexDeserialized.search(query_embedding, k=1)
+        
+        bestMatchIndex = indicies[0][0]
+
+        bestMatchSentence = text_content[bestMatchIndex]
+
+        return {
+            "doc_id": doc_id,
+            "doc_name": doc_name,
+            "embedding": embedding.tolist(),  # Convert numpy array to list for JSON serialization
+            "faiss_index": faiss_index,
+            "text_content": text_content,  # Include the text content in the response
+            "best_match_sentence" : bestMatchSentence
+        }
+
+    except Exception as e:
+        print(f"Error in finding the relevant info in the doc: {str(e)}")
+        return {"error": f"Search failed in find_best_sentence: {str(e)}"}

@@ -1,5 +1,6 @@
 import sqlite3
 import numpy as np
+import json
 
 from app.services.storage import conn, cur
 
@@ -7,14 +8,14 @@ def getInfo(db_id: str ,doc_id: str):
     if not isinstance(doc_id, str):
         doc_id = str(doc_id)
 
-    cur.execute("SELECT doc_id, name, embedding_bytes, faiss_index FROM document_metadata WHERE doc_id=? and db_id=?", (doc_id, db_id))
+    cur.execute("SELECT doc_id, name, embedding_bytes, faiss_index, text_content FROM document_metadata WHERE doc_id=? and db_id=?", (doc_id, db_id))
     
     result = cur.fetchone()
 
     if result:
-        ndoc_id, doc_name, embedding_bytes, faissIndex = result
+        ndoc_id, doc_name, embedding_bytes, faissIndex, textContent = result
         embedding = np.frombuffer(embedding_bytes, dtype=np.float32)
-        return ndoc_id, doc_name, embedding, faissIndex
+        return ndoc_id, doc_name, embedding, faissIndex, textContent
     else:
         return None
     
@@ -63,8 +64,22 @@ def getDbEmbeddings(db_id: str):
         return [res[0] for res in results]
     else:
         return None
-    
+
+
+## this is different than getDb since this only gets doc_id from the db_id associated with it instead of the whole db 
 def getDocIdsByDbId(db_id: str):
     cur.execute("SELECT doc_id FROM document_metadata WHERE db_id=? ORDER BY ROWID", (db_id,))
     results = cur.fetchall()
     return [row[0] for row in results]
+
+
+def getDocText(doc_id: str) -> list:
+    try:
+        cur.execute("SELECT text_content FROM document_metadata WHERE doc_id=?", (doc_id,))
+        result = cur.fetchone()
+        if result and result[0]:
+            return json.loads(result[0])
+        return None
+    except Exception as e:
+        print(f"Error retrieving document text: {str(e)}")
+        return None
