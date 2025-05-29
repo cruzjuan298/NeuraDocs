@@ -12,17 +12,14 @@ def get_query_embedding(query: str):
 
 def find_best_match(query: str, db_id: str):
     try:
-        # Create query embedding
         query_embedding = get_query_embedding(query)
 
-        # Get database embeddings and doc IDs
         dbEmbeddings = getDbEmbeddings(db_id)
         doc_ids = getDocIdsByDbId(db_id)
 
         if not dbEmbeddings or not doc_ids:
             return {"error": "No documents found in database"}
 
-        # Convert embeddings to numpy arrays
         embeddingsList = []
         for embedding in dbEmbeddings:
             originalEmbeddingArray = blobToEmbedding(embedding)
@@ -31,14 +28,11 @@ def find_best_match(query: str, db_id: str):
         if not embeddingsList:
             return {"error": "No valid embeddings found"}
 
-        # Convert list to numpy array
         embeddings_np = np.vstack(embeddingsList).astype("float32")
 
-        # Build FAISS index
         index = faiss.IndexFlatL2(embeddings_np.shape[1])
         index.add(embeddings_np)
 
-        # Search for nearest neighbor
         distances, indices = index.search(query_embedding, k=1)
         
         if indices.size == 0:
@@ -87,9 +81,9 @@ def find_best_sentence(query: str, db_id: str, doc_id: str):
         return {
             "doc_id": doc_id,
             "doc_name": doc_name,
-            "embedding": embedding.tolist(),  # Convert numpy array to list for JSON serialization
+            "embedding": embedding.tolist(),  # convert numpy array to list for JSON serialization
             "faiss_index": faiss_index,
-            "text_content": text_content,  # Include the text content in the response
+            "text_content": text_content, 
             "best_match_sentence" : bestMatchSentence
         }
 

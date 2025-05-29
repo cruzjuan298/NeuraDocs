@@ -13,13 +13,11 @@ async def search(request: SearchRequest):
     try:
         from app.services.search import find_best_match, find_best_sentence
 
-        # First find the best matching document
         best_match_doc = find_best_match(request.query, request.db_id)
         
         if "error" in best_match_doc:
             return best_match_doc
 
-        # Then find the best sentence in that document
         best_match = find_best_sentence(
             request.query, 
             request.db_id, 

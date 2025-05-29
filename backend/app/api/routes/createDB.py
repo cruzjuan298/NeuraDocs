@@ -4,7 +4,6 @@ createDBRouter = APIRouter()
 
 @createDBRouter.post("/createDB")
 def createNewDB(dbId, db_name):
-    #inserting db id into the database
     from app.services.storage import insertDb
     if not isinstance(dbId, str) and not isinstance(db_name, str):
         dbId = str(dbId)
