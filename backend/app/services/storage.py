@@ -11,7 +11,11 @@ def get_dims():
 conn = sqlite3.connect("documents.db", timeout=30)
 cur = conn.cursor()
 
+<<<<<<< HEAD
 # Create tables if they don't exist
+=======
+# Create tables if they don't exist; remove after testing
+>>>>>>> adfc0e0aa67c1eea194d6004c22330df6b1a35d3
 cur.execute("""
             CREATE TABLE IF NOT EXISTS document (
             db_id TEXT PRIMARY KEY,
@@ -25,6 +29,11 @@ cur.execute("""
 # embedding_bytes is the whole embedding of the doc
 # faiss_index is the index of the doc with text
 # text_content is the list of sentences stored as JSON
+<<<<<<< HEAD
+=======
+cur.execute("DROP TABLE IF EXISTS document_metadata")
+
+>>>>>>> adfc0e0aa67c1eea194d6004c22330df6b1a35d3
 cur.execute("""
             CREATE TABLE IF NOT EXISTS document_metadata (
             doc_id TEXT PRIMARY KEY,
@@ -79,9 +88,15 @@ def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings
 
         try:
             cur.execute("""
+<<<<<<< HEAD
                 INSERT INTO document_metadata (doc_id, db_id, name, embedding_bytes, text_content) 
                 VALUES(?, ?, ?, ?, ?)
             """, (doc_id, db_id, doc_name, sqlite3.Binary(nembedding.tobytes()), text_json))
+=======
+                INSERT INTO document_metadata (doc_id, db_id, name, embedding_bytes, faiss_index ,text_content) 
+                VALUES(?, ?, ?, ?, ?, ?)
+            """, (doc_id, db_id, doc_name, sqlite3.Binary(nembedding.tobytes()), sent_index, text_json))
+>>>>>>> adfc0e0aa67c1eea194d6004c22330df6b1a35d3
             conn.commit()
             print(f"(Debug) Successfully inserted document into database")
         except sqlite3.Error as e:
