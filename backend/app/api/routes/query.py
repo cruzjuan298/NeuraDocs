@@ -11,15 +11,27 @@ class SearchRequest(BaseModel):
 @queryRouter.post("/search")
 async def search(request: SearchRequest):
     try:
-        # For now, return a mock response
-        # TODO Implement actual search functionality
-        from app.services.search import find_best_match
+        from app.services.search import find_best_match, find_best_sentence
 
-        best_match = find_best_match(request.query, request.db_id)
+        best_match_doc = find_best_match(request.query, request.db_id)
+        
+        if "error" in best_match_doc:
+            return best_match_doc
 
-        if best_match == None:
-            return "No best match found"
-        return {"best_match" : best_match}
+        best_match = find_best_sentence(
+            request.query, 
+            request.db_id, 
+            best_match_doc["doc_id"]
+        )
+
+        if "error" in best_match:
+            return best_match
+
+        return {
+            "best_match": best_match,
+            "document_match": best_match_doc
+        }
     
     except Exception as e:
+        print(f"Error in search endpoint: {str(e)}")
         return {"error": str(e)}
