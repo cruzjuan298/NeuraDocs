@@ -66,8 +66,12 @@ def find_best_sentence(query: str, db_id: str, doc_id: str):
             return {"error": "Document not found"}
             
         doc_id, doc_name, embedding, faiss_index, text_content = doc_info
+<<<<<<< HEAD
+        
+=======
         print(doc_info)
         ## error ocurring here
+>>>>>>> adfc0e0aa67c1eea194d6004c22330df6b1a35d3
         if faiss_index is None:
             return {"error": "Document has no sentence embeddings available for search"}
             
