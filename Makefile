@@ -17,9 +17,9 @@ endif
 
 # Run the FastAPI application with hot reload
 run-backend:
-	cd backend && uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+	cd backend && uvicorn main:app --host localhost --port 8000 --reload
 
-# Build the frontend
+# Build the frontendc
 build-frontend:
 	cd frontend && npm run build	
 

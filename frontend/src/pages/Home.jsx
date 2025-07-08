@@ -22,7 +22,7 @@ const Home = ({ createDatabase }) => {
                 },
                 body: JSON.stringify({
                     dbId: db_id,
-                    db_name: `Database ${db_id.split('-')[1]}`
+                    dbName: `Database ${db_id.split('-')[1]}`
                 })
             })
 

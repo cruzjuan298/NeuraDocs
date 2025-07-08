@@ -24,7 +24,7 @@ app.add_middleware(
 
     ##allowing for frontend and backend interacting
     CORSMiddleware,
-    allow_origins=[frontend_baseUrl, f"https://127.0.0.1:{port}"], ## server might run on a different port is the port listed in your .env file is in use. To avoid this, check if the correct ports are being used
+    allow_origins=[frontend_baseUrl, f"http://127.0.0.1:{port}"], ## server might run on a different port is the port listed in your .env file is in use. To avoid this, check if the correct ports are being used
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
