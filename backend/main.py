@@ -5,14 +5,26 @@ from app.api.routes.retrieve import retrieveRouter
 from app.api.routes.createDB import createDBRouter
 from app.api.routes.modify import modifyRouter
 from fastapi.middleware.cors import CORSMiddleware
+import os
+from dotenv import load_dotenv, dotenv_values
 
-app = FastAPI()
+load_dotenv()
+
+port = os.getenv("PORT")
+frontend_baseUrl = os.getenv("FRONTEND_BASE_URL")
+
+
+app = FastAPI(
+    title="RAG documentation management backend",
+    description="Easily extract data from all of your documents in one place",
+    version="0.0.1"
+)
 
 app.add_middleware(
 
-    ##allowing for frontend and backend interacting)
+    ##allowing for frontend and backend interacting
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://127.0.0.1:8000"],
+    allow_origins=[frontend_baseUrl, f"https://127.0.0.1:{port}"], ## server might run on a different port is the port listed in your .env file is in use. To avoid this, check if the correct ports are being used
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],

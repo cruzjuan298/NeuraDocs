@@ -45,7 +45,7 @@ const Home = ({ createDatabase }) => {
             <div className="home-actions">
                 <h3>Get Started: </h3>
                 <button className="create-db-button" onClick={handleCreateDatabase} >
-                    <Database size={24} />
+                    <Database className="db-icon" size={24} />
                     Create New Database
                 </button>
                 <Link to="/database" className="view-db-button" >

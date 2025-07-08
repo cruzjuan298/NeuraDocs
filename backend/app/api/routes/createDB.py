@@ -1,14 +1,16 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
 
 createDBRouter = APIRouter()
 
+class CreateDB(BaseModel):
+    dbId: str
+    dbName: str
+
 @createDBRouter.post("/createDB")
-def createNewDB(dbId, db_name):
+async def createNewDB(create: CreateDB):
     from app.services.storage import insertDb
-    if not isinstance(dbId, str) and not isinstance(db_name, str):
-        dbId = str(dbId)
-        db_name = str(db_name)
-    message = insertDb(dbId, db_name)
+    message = insertDb(create.dbId, create.dbName)
     print(message)
     if insertDb is None:
         return None
