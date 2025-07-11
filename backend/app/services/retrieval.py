@@ -54,7 +54,7 @@ def getDocId(db_id: str, docName: str):
 
 def getDb(db_id: str):
     try:
-        with get_db_connection as conn:
+        with get_db_connection() as conn:
             cur = conn.cursor()
 
             print(f"(Debug) Getting database info for db_id: {db_id}")

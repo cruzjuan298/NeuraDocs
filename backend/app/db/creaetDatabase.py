@@ -33,7 +33,7 @@ def create_db():
                 FOREIGN KEY (db_id) REFERENCES document(db_id) on DELETE CASCADE
                 )
             """)
-            conn.commit()
+
         return {"message" : "successfully created database table", "success" : True}
     except sqlite3.Error as e:
         print(f"There has been an error when creating the intial database tables, {str(e)}")
