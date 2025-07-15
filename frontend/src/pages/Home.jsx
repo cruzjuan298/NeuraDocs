@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Database } from "lucide-react";
 import "../styles/home.css"
+import useInsert from "../hooks/useInsert.js";
 
 const Home = ({ createDatabase }) => {
+    const { insertDb, error } = useInsert()
     const navigate = useNavigate();
 
     const handleCreateDatabase = () => {
@@ -13,29 +15,6 @@ const Home = ({ createDatabase }) => {
         navigate(`/new-database/${newDatabaseId}`);
     }
 
-    const insertDb = async (db_id) => {
-        try {
-            const response = await fetch("http://127.0.0.1:8000/create/createDB", {
-                method : "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    dbId: db_id,
-                    dbName: `Database ${db_id.split('-')[1]}`
-                })
-            })
-
-            const data = await response.json()
-
-            if (data === null ){
-                console.log("Error inserting DB")
-            }
-            console.log("insertDB data: " ,data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (
         <div className="home-container">

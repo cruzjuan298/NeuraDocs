@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/database.css";
 
 const Databases = ({ databases }) => {
     const [editingId, setEditingId] = useState(null);
     const [newName, setNewName] = useState("");
-
+    
     const handleEdit = (db) => {
         setEditingId(db.id);
         setNewName(db.name);
@@ -63,7 +63,7 @@ const Databases = ({ databases }) => {
                                 </div>
                             ) : (
                                 <div className="database-link-container">
-                                    <Link to={`/new-database/${db.id}`} className="database-link">
+                                    <Link to={`/new-database/${db.id}`} state={{ focus : true}} className="database-link">
                                         {db.name}
                                     </Link>
                                     <button onClick={() => handleEdit(db)} className="edit-button">

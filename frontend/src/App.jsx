@@ -8,7 +8,6 @@ import NewDataBase from "./pages/NewDatabase.jsx";
 
 function App(){
   const [isOpen, setIsOpen] = useState(false);
-
   const [databases, setDatabases] = useState([]);
   
   // adding a new database by updating the database state to include the new one

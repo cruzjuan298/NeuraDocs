@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import useFiles from "../hooks/useFiles.js";
 import FileUpload from "../components/FileUpload.jsx";
 import SearchFile from "../components/SearchFile.jsx";
 import "../styles/newdatabase.css";
@@ -7,8 +8,11 @@ import "../styles/newdatabase.css";
 const NewDataBase = ({ isOpen }) => {
     const { id } = useParams(); //getting the database ID from the URL, deconstructioning the id property from the object
     const navigate = useNavigate();
+    const location = useLocation();
     const [uploadedFiles, setUploadedFiles] = useState([]);
-
+    const { retrieveDb, error } = useFiles(id);
+    const { focus } = location.state || {}
+    
     const handleFileUpload = (file) => {
         setUploadedFiles(prevFiles => [...prevFiles, 
             { name: file.name, size : file.size}
@@ -16,26 +20,21 @@ const NewDataBase = ({ isOpen }) => {
     }
 
     useEffect(() => {
-        retrieveDatabases();
-    }, [id])
+        const loadDb = async () => {
+            if (!focus) return;
 
-    const retrieveDatabases = async () => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/retrieve/retrieveDatabase?db_id=${id}`, {
-                method: "GET"
-            })
+            const files = await retrieveDb(id);
 
-            const data = await response.json()
+            if (!files || !files.doc_names) {
+                console.warn("Error in retrieving Db info");
+                return
+            }
             
-            if (data !== null){
-                console.log("retrieve Data: ", data);
-                setUploadedFiles(data.doc_names.map(name => ({name, size: "Unknown"})));
-                console.log(uploadedFiles)
-            } 
-        } catch (error) {
-            console.log(error)
+            setUploadedFiles(files.doc_names.map(name => ({name, size: "Unknown"})));
+            navigate(location.pathname, {replace: true, state : {} }) // clears the navigation state after first load 
         }
-    }
+        loadDb()
+    }, [focus, retrieveDb, navigate, location.pathname])
 
     return (
         <div className={`newDatabase-container ${isOpen ? "shifted" : ""}`}>
