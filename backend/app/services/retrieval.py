@@ -69,7 +69,7 @@ def getDb(db_id: str):
                 return results
             else:
                 print(f"(Debug) No documents found in database for db_id: {db_id}")
-                return None
+                return [] 
     except Exception as e:
         print(f"Error when trying to get db by db id: {db_id}. Error: {str(e)}")
         return None

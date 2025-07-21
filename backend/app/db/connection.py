@@ -13,6 +13,10 @@ def get_db_connection():
     conn.execute("PRAGMA foreign_keys = ON;")
     try:
         yield conn
+        conn.commit()
+    except:
+        conn.rollback()
+        raise
     finally:
         conn.close()
 

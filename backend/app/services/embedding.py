@@ -27,7 +27,7 @@ def process_file(db_id, doc_name, doc_info, text):
 
     embedding = model.encode(doc_info).astype("float32").reshape(1, -1)
     sentence_embedding = model.encode(text, convert_to_numpy=True)
-    save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embedding)
-    
+    result = save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embedding)
+    print(result)
     return doc_id
 
