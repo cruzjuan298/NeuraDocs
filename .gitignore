@@ -51,4 +51,5 @@ lerna-debug.log*
 
 todo.txt
 backend/uploads
-backend/documents.db
+*.db
+*.faiss
