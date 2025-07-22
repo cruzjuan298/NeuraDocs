@@ -2,6 +2,7 @@ import faiss
 import numpy as np
 import sqlite3
 import json
+import os
 from app.db.connection import get_db_connection
 
 def get_dims():
@@ -22,6 +23,27 @@ def insertDb(dbId, db_name):
     except Exception as e:
         return f"Error occurred: {str(e)}"
 
+## there was an issue with using the built-in faiss serialization method. Its best to work around this by manually serializing it.
+## Pipeline: write index info to a faiss file => read info into a variable => delete file => return variable with 
+def serialize(index):
+    faiss_index_bytes = None
+    file_name = "document_sentence_index.faiss"
+
+    try:
+        faiss.write_index(index, file_name)
+        
+        with open(file_name, "rb") as f:
+            faiss_index_bytes = f.read()
+
+    except Exception as e:
+        print(f"(Debug) Error in trying to delete file with the faiss serilzation information. Error: {str(e)}")
+        return None
+    
+    finally:
+        if os.path.exists(file_name):
+            os.remove(file_name)
+                
+    return faiss_index_bytes
 
 def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings):
     try:
@@ -60,25 +82,14 @@ def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings
                 print(f"(Debug) FAISS index is empty after adding embeddings")
                 return {"error": "Failed to create sentence embeddings index"}
 
-
-            ## issue with serializing the sentence index into a byte array. The current solution to this is to manually serialize it.
-            faiss_index_bytes = None
-            try:
-                faiss.write_index(sent_index, "document_sentences_index.faiss")
-                
-                with open("document_sentences_index.faiss", "rb") as f:
-                    faiss_index_bytes = f.read()
-
-                print(f"Type of faiss_index_bytes: {type(faiss_index_bytes)}")
-            except Exception as e :
-                print(f"Error serializing Faiss index. Error: {str(e)}. Here is the faiss index: {faiss_index_bytes}.")
-                return {"error" : f"Error in Faiss serialization error: {str(e)}"}
+            faiss_index_bytes = serialize(sent_index)
+            print(f"Type of faiss_index_bytes: {type(faiss_index_bytes)}")
 
             nembedding_bytes = nembedding.tobytes()
 
             try:
                 cur.execute("""
-                    INSERT INTO document_metadata (doc_id, db_id, name, embedding_bytes, faiss_index ,text_content) 
+                    INSERT INTO document_metadata (doc_id, db_id, name, embedding_bytes, faiss_index_bytes ,text_content) 
                     VALUES(?, ?, ?, ?, ?, ?)
                 """, (doc_id, db_id, doc_name, sqlite3.Binary(nembedding_bytes), sqlite3.Binary(faiss_index_bytes), text_json))
                 

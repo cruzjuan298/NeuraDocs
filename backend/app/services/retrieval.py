@@ -13,16 +13,16 @@ def getInfo(db_id: str ,doc_id: str):
             if not isinstance(doc_id, str):
                 doc_id = str(doc_id)
 
-            cur.execute("SELECT doc_id, name, embedding_bytes, faiss_index, text_content FROM document_metadata WHERE doc_id=? and db_id=?", (doc_id, db_id))
+            cur.execute("SELECT doc_id, name, embedding_bytes, faiss_index_bytes, text_content FROM document_metadata WHERE doc_id=? and db_id=?", (doc_id, db_id))
             
             result = cur.fetchone()
             print(f"(Debug) Query result: {result is not None}")
 
             if result:
-                ndoc_id, doc_name, embedding_bytes, faissIndex, textContent = result
+                ndoc_id, doc_name, embedding_bytes, faiss_index_bytes, text_content = result
                 embedding = np.frombuffer(embedding_bytes, dtype=np.float32)
                 print(f"(Debug) Successfully retrieved document info for: {doc_name}")
-                return ndoc_id, doc_name, embedding, faissIndex, textContent
+                return ndoc_id, doc_name, embedding, faiss_index_bytes, text_content
             else:
                 print(f"(Debug) No document found with doc_id: {doc_id} and db_id: {db_id}")
                 return None

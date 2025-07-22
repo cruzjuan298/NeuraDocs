@@ -28,7 +28,7 @@ def create_db():
                 db_id TEXT,
                 name TEXT,
                 embedding_bytes BLOB, 
-                faiss_index BLOB,
+                faiss_index_bytes BLOB,
                 text_content TEXT,
                 FOREIGN KEY (db_id) REFERENCES document(db_id) on DELETE CASCADE
                 )

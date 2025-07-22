@@ -38,7 +38,7 @@ const SearchFile = ({ db_id }) => {
             if (data.error) {
                 setResponse(`Error: ${data.error}`);
             } else if (data.best_match) {
-                setResponse(`Best Match: ${data.best_match.doc_name} (ID ${data.best_match.doc_id})`);
+                setResponse(`Best Match: ${data.best_match.best_match_doc_name} (ID ${data.document_match.doc_id}). Response: ${data.best_match.best_match_sentence}`);
             } else {
                 setResponse("No match found.");
             }
