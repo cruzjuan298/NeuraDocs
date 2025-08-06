@@ -2,7 +2,7 @@ import os
 import json
 import faiss
 import numpy as np
-from .embedding import model 
+from app.assets.model import model
 from .retrieval import getDbEmbeddings, getDocIdsByDbId, getInfo
 from .transform import blobToEmbedding
 

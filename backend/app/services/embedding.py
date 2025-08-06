@@ -1,9 +1,7 @@
 import faiss
 import hashlib
 import numpy as np
-from sentence_transformers import SentenceTransformer
-
-model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+from app.assets.model import model
 
 def hash_doc(doc) :
     ##creating a hash to prevent duplication in the embeddedings
