@@ -8,7 +8,7 @@ class CreateDB(BaseModel):
     dbName: str
 
 @createDBRouter.post("/createDB")
-async def createNewDB(create: CreateDB):
+def createNewDB(create: CreateDB):
     from app.services.storage import insertDb
     message = insertDb(create.dbId, create.dbName)
     print(message)

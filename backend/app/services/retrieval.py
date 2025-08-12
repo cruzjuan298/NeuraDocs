@@ -127,3 +127,20 @@ def getDocText(doc_id: str) -> list:
     except Exception as e:
         print(f"Error retrieving document text: {str(e)}")
         return None
+
+def getAllDb():
+    try:
+        with get_db_connection() as conn:
+            dbs = []
+            cur = conn.cursor()
+
+            cur.execute("SELECT * FROM document")
+            result = cur.fetchall()
+
+            if result:
+                dbs = [{"db_id" : row[0], "name" : row[1]} for row in result]
+                return dbs
+            else:
+                return []
+    except Exception as e:
+        return None

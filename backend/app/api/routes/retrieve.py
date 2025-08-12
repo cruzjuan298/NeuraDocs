@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Query
-from app.services.retrieval import getDocId, getDb, getDocNames
+from app.services.retrieval import getDocId, getDb, getDocNames, getAllDb
 
 retrieveRouter = APIRouter()
 
 ##retrieve methods for getting database or doc info
 
 @retrieveRouter.get("/retrieveDatabase")
-async def retrieveDb(db_id: str) :
+def retrieveDb(db_id: str) :
     print(f"(Debug) Retrieving database with db_id: {db_id}")
     if not isinstance(db_id, str):
         db_id = str(db_id)
@@ -23,7 +23,7 @@ async def retrieveDb(db_id: str) :
     return {"doc_names" :  dbDocNames}
 
 @retrieveRouter.get("/retrieveDoc")
-async def getDoc(db_id, docName):
+def getDoc(db_id, docName):
     print(f"(Debug) Retrieving document - db_id: {db_id}, docName: {docName}")
     docId = getDocId(db_id, docName)
     print(f"(Debug) Retrieved doc_id: {docId}")
@@ -33,3 +33,13 @@ async def getDoc(db_id, docName):
         return {"message" : "Document not found"}
     
     return {"doc_id" : docId}
+
+@retrieveRouter.get("/retrieveDatabase/all")
+def getAllDbs():
+    dbNames = getAllDb()
+
+    if dbNames is None:
+        return {"message" : "No dbs found","success": False}    
+    return {"message" : "Dbs found" ,"dbs" : dbNames, "success" : True}
+    
+    

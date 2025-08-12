@@ -8,7 +8,8 @@ export const API_CONFIG ={
     endpoints : {
         upload : "/files/upload",
         retrieve: "/retrieve/retrieveDatabase?db_id=",
-        createDb: "/create/createDB"
+        createDb: "/create/createDB",
+        retrieveDbs: "/retrieve/retrieveDatabase/all"
     },
     apiVersion: "v0.1",
 }

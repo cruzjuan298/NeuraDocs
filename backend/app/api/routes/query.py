@@ -9,7 +9,7 @@ class SearchRequest(BaseModel):
     db_id: str
 
 @queryRouter.post("/search")
-async def search(request: SearchRequest):
+def search(request: SearchRequest):
     try:
         from app.services.search import find_best_match, find_best_sentence
 

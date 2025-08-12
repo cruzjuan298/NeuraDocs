@@ -7,7 +7,7 @@ const Databases = ({ databases }) => {
     const [newName, setNewName] = useState("");
     
     const handleEdit = (db) => {
-        setEditingId(db.id);
+        setEditingId(db.db_id);
         setNewName(db.name);
     };
 
@@ -44,8 +44,8 @@ const Databases = ({ databases }) => {
             ) : (
                 <ul className="database-list">
                     {databases.map((db) => (
-                        <li key={db.id} className="database-item">
-                            {editingId === db.id ? (
+                        <li key={db.db_id} className="database-item">
+                            {editingId === db.db_id ? (
                                 // edit db name here
                                 <div className="edit-container">
                                     <input
@@ -63,7 +63,7 @@ const Databases = ({ databases }) => {
                                 </div>
                             ) : (
                                 <div className="database-link-container">
-                                    <Link to={`/new-database/${db.id}`} state={{ focus : true}} className="database-link">
+                                    <Link to={`/new-database/${db.db_id}`} state={{ focus : true}} className="database-link">
                                         {db.name}
                                     </Link>
                                     <button onClick={() => handleEdit(db)} className="edit-button">

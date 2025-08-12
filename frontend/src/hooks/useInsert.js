@@ -2,7 +2,7 @@ import { useCallback, useState } from "react"
 import { API_CONFIG } from "../config/api"
 
 export default function useInsert() {
-   const [error, setError] = useState(null);
+    const [error, setError] = useState(null);
     const apiUrl = `${API_CONFIG.baseUrl}${API_CONFIG.endpoints.createDb}`
 
     const insertDb = useCallback(async (dbIdToInsert) => {
