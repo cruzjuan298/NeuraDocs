@@ -13,7 +13,7 @@ export default function useFiles(dbIdParam) {
 
     const retrieveDb = useCallback(async () => {
         if (!apiUrl) {
-            console.warn("Error while trying to retrieve with an invalid appointmentUrl type");
+            console.warn("Error while trying to retrieve with an invalid URL type");
             return;
         }
 

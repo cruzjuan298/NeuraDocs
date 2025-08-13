@@ -6,6 +6,7 @@ from app.api.routes.query import queryRouter
 from app.api.routes.retrieve import retrieveRouter
 from app.api.routes.createDB import createDBRouter
 from app.api.routes.modify import modifyRouter
+from app.api.routes.delete import deleteRouter
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.creaetDatabase import create_db
 from dotenv import load_dotenv, dotenv_values
@@ -41,7 +42,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[frontend_baseUrl, f"http://127.0.0.1:{port}"], ## server might run on a different port is the port listed in your .env file is in use. To avoid this, check if the correct ports are being used
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+    allow_methods=["*"],
     allow_headers=["*"],
 
 )
@@ -53,3 +54,4 @@ app.include_router(queryRouter, prefix="/query")
 app.include_router(retrieveRouter, prefix="/retrieve")
 app.include_router(createDBRouter, prefix="/create")
 app.include_router(modifyRouter, prefix="/modify")
+app.include_router(deleteRouter, prefix="/delete")

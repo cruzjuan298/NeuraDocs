@@ -55,8 +55,7 @@
     flex-grow: 1;
 }
 
-.save-button {
-    background: #28a745;
+.modify-buttons {
     color: white;
     border: none;
     padding: 5px 10px;
@@ -64,19 +63,25 @@
     cursor: pointer;
 }
 
-.save-button:hover {
+#save-button {
+    background: #28a745;
+}
+
+#save-button:hover {
     background: #218838;
 }
-
-.cancel-button {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
+#cancel-button {
+    background: #888081;
 }
 
-.cancel-button:hover {
+#cancel-button:hover {
+    background: #6b6767;
+}
+
+#delete-button{
+    background: #dc3545;
+}
+
+#delete-button:hover {
     background: #c82333;
 }

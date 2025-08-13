@@ -9,7 +9,9 @@ export const API_CONFIG ={
         upload : "/files/upload",
         retrieve: "/retrieve/retrieveDatabase?db_id=",
         createDb: "/create/createDB",
-        retrieveDbs: "/retrieve/retrieveDatabase/all"
+        retrieveDbs: "/retrieve/retrieveDatabase/all",
+        deleteDb : (dbId) => `/delete/removeDb?db_id=${dbId}`,
+        modifyName: (dbId, newName) => `/modify/update-db-name?db_id=${dbId}&new_name=${newName}`
     },
     apiVersion: "v0.1",
 }
