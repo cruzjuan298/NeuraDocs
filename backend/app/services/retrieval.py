@@ -13,16 +13,15 @@ def getInfo(db_id: str ,doc_id: str):
             if not isinstance(doc_id, str):
                 doc_id = str(doc_id)
 
-            cur.execute("SELECT doc_id, name, embedding_bytes, faiss_index_bytes, text_content FROM document_metadata WHERE doc_id=? and db_id=?", (doc_id, db_id))
+            cur.execute("SELECT doc_id, name, faiss_index_bytes, text_content FROM document_metadata WHERE doc_id=? and db_id=?", (doc_id, db_id))
             
             result = cur.fetchone()
             print(f"(Debug) Query result: {result is not None}")
 
             if result:
-                ndoc_id, doc_name, embedding_bytes, faiss_index_bytes, text_content = result
-                embedding = np.frombuffer(embedding_bytes, dtype=np.float32)
+                ndoc_id, doc_name, faiss_index_bytes, text_content = result
                 print(f"(Debug) Successfully retrieved document info for: {doc_name}")
-                return ndoc_id, doc_name, embedding, faiss_index_bytes, text_content
+                return ndoc_id, doc_name, faiss_index_bytes, text_content
             else:
                 print(f"(Debug) No document found with doc_id: {doc_id} and db_id: {db_id}")
                 return None
@@ -81,26 +80,6 @@ def getDocNames(dbInfo):
     
     return docNames
 
-def getDbEmbeddings(db_id: str):
-    try: 
-        with get_db_connection() as conn:
-            cur = conn.cursor()
-
-            if not isinstance(db_id, str ):
-                db_id = str(db_id)
-            
-            cur.execute("SELECT embedding_bytes from document_metadata where db_id=?", (db_id,))
-            results = cur.fetchall()
-            
-            if results:
-                return [res[0] for res in results]
-            else:
-                return None
-    except Exception as e:
-        print(f"Error trying to get db embedding: {str(e)}")
-        return None
-
-
 ## this is different than getDb since this only gets doc_id from the db_id associated with it instead of the whole db 
 def getDocIdsByDbId(db_id: str):
     try:
@@ -143,4 +122,22 @@ def getAllDb():
             else:
                 return []
     except Exception as e:
+        return None
+    
+
+def getDocNamesFromDb(db_id):
+    try:
+        with get_db_connection() as conn:
+            cur = conn.cursor()
+
+            cur.execute("SELECT name FROM document_metadata WHERE db_id=?", (db_id,))
+
+            result = cur.fetchall()
+
+            if result:
+                docNames = [row[0] for row in result]
+                return docNames
+            return []
+    except Exception as e:
+        print("Error occured while trying to get doc names from db")
         return None

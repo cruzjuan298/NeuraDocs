@@ -45,7 +45,7 @@ def serialize(index):
                 
     return faiss_index_bytes
 
-def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings):
+def save_embedding(db_id, doc_id, doc_name, text, sentence_embeddings):
     try:
         with get_db_connection() as conn:
             cur = conn.cursor()
@@ -58,8 +58,6 @@ def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings
                 return {"error": "No sentence embeddings provided for document"}
             
             print(f"(Debug) Sentence embeddings shape: {getattr(sentence_embeddings, 'shape', 'N/A')}")
-            nembedding = np.array(embedding, dtype=np.float32).reshape(1, -1)
-            print(f"(Debug) Document embedding shape: {nembedding.shape}")
             
             text_json = json.dumps(text)
             print(f"(Debug) Text content length: {len(text_json)}")
@@ -85,13 +83,11 @@ def save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embeddings
             faiss_index_bytes = serialize(sent_index)
             print(f"Type of faiss_index_bytes: {type(faiss_index_bytes)}")
 
-            nembedding_bytes = nembedding.tobytes()
-
             try:
                 cur.execute("""
-                    INSERT INTO document_metadata (doc_id, db_id, name, embedding_bytes, faiss_index_bytes ,text_content) 
-                    VALUES(?, ?, ?, ?, ?, ?)
-                """, (doc_id, db_id, doc_name, sqlite3.Binary(nembedding_bytes), sqlite3.Binary(faiss_index_bytes), text_json))
+                    INSERT INTO document_metadata (doc_id, db_id, name, faiss_index_bytes ,text_content) 
+                    VALUES(?, ?, ?, ?, ?)
+                """, (doc_id, db_id, doc_name, sqlite3.Binary(faiss_index_bytes), text_json))
                 
                 print(f"(Debug) Successfully inserted document into database")
             except sqlite3.Error as e:

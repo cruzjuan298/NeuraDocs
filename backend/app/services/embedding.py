@@ -23,9 +23,11 @@ def process_file(db_id, doc_name, doc_info, text):
     if exisitingDb is None:
         insertDb(db_id, doc_name)
 
-    embedding = model.encode(doc_info).astype("float32").reshape(1, -1)
     sentence_embedding = model.encode(text, convert_to_numpy=True)
-    result = save_embedding(db_id, doc_id, doc_name, embedding, text, sentence_embedding)
+    result = save_embedding(db_id, doc_id, doc_name, text, sentence_embedding)
     print(result)
     return doc_id
 
+def generateEmbeding(item):
+    items_embeddings = model.encode(item, convert_to_numpy=True)
+    return items_embeddings

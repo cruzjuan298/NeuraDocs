@@ -3,8 +3,9 @@ import json
 import faiss
 import numpy as np
 from app.assets.model import model
-from .retrieval import getDbEmbeddings, getDocIdsByDbId, getInfo
+from .retrieval import getDocIdsByDbId, getInfo, getDocNamesFromDb
 from .transform import blobToEmbedding
+from .embedding import generateEmbeding
 
 # here we are deserializing the bytes data to a byte stream using the io modules ByteIO method. Then we just load index object using the write_index method and return it. 
 ## documentation used => https://docs.python.org/3/library/io.html
@@ -37,16 +38,17 @@ def find_best_match(query: str, db_id: str):
     try:
         query_embedding = get_query_embedding(query)
 
-        dbEmbeddings = getDbEmbeddings(db_id)
+        doc_names = getDocNamesFromDb(db_id)
+
         doc_ids = getDocIdsByDbId(db_id)
 
-        if not dbEmbeddings or not doc_ids:
+        if not doc_names or not doc_ids:
             return {"error": "No documents found in database"}
 
         embeddingsList = []
-        for embedding in dbEmbeddings:
-            originalEmbeddingArray = blobToEmbedding(embedding)
-            embeddingsList.append(originalEmbeddingArray)
+        for names in doc_names:
+            embedding = generateEmbeding(names)
+            embeddingsList.append(embedding)
 
         if not embeddingsList:
             return {"error": "No valid embeddings found"}
@@ -90,7 +92,7 @@ def find_best_sentence(query: str, db_id: str, doc_id: str):
         if doc_info is None:
             return {"error": "Document not found"}
             
-        ndoc_id, doc_name, embedding, faiss_index_bytes, text_content_json = doc_info
+        ndoc_id, doc_name, faiss_index_bytes, text_content_json = doc_info
 
         if faiss_index_bytes is None:
             return {"error": "Document has no sentence embeddings available for search"}

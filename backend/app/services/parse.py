@@ -3,20 +3,6 @@ import pymupdf
 import pathlib
 import re
 
-def extract_metadata_from_text(text):
-    metadata = {}
-    emails = re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', text)
-
-    if emails:
-        metadata["emails"] = list(set(emails))
-
-    phone_numbers = re.findall(r'\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}', text)
-
-    if phone_numbers:
-         metadata["phone_number"] = list(set(phone_numbers))
-        
-    return metadata
-
 def parse_doc(file_path: str ) -> str:
     file_path = pathlib.Path(file_path)
     with open(file_path, "rb") as f:
@@ -34,8 +20,6 @@ def parse_doc(file_path: str ) -> str:
             newFilePath = file_path.with_suffix(".txt")
             newFilePath.write_text(text, encoding="utf-8")
 
-            metadata = extract_metadata_from_text(text)
-            print(text)
             return splitSent(newFilePath.read_text(encoding="utf-8")), text
         except Exception as e:
             print(f"Error processing PDF: {e}")
@@ -44,7 +28,6 @@ def parse_doc(file_path: str ) -> str:
     with open(file_path, "r", encoding=encoding, errors="replace") as f:
             text = f.read()
     formattedText = splitSent(text)
-    metadata = extract_metadata_from_text(text)
     return formattedText, text
 
 def splitSent(text):
