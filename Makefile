@@ -28,6 +28,7 @@ run-frontend:
 	cd frontend && npm run dev -- --port 3000
 
 # Install dependencies inside virtual environment
+# for unix based systems, activate the venv with the source command: source venv/bin/activate
 install:
 	@echo "Creating virtual environment..."
 	$(PYTHON) -m venv $(VENV)
